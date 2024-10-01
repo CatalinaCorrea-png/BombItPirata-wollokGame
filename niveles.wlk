@@ -8,6 +8,8 @@ object nivel1 {
     game.addVisual(player1)
     game.addVisual(player2)
     config.configurarTeclas()
+    // Construccion de nivel
+    constructor.wall_gen()
   }
 }
 
