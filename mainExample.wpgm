@@ -1,0 +1,26 @@
+import wollok.game.*
+
+import extras.*
+import niveles.*
+
+program BombItPirata {
+	game.title("Pepita")
+	game.height(15)
+	game.width(25)
+  game.cellSize(40)
+  game.boardGround("stone-floor-1.png")
+  game.addVisual(tableroPiso)
+  game.addVisual(tableroPuntajes)
+  game.addVisual(new Barril(position = game.at(10,1)))
+  game.addVisual(new BotellaAzul(position = game.at(11,1)))
+  game.addVisual(new BotellaRoja(position = game.at(12,1)))
+  game.addVisual(new Silla(position = game.at(13,1)))
+  game.addVisual(new Bloque(position = game.at(12,3)))
+  // game.ground("logo1.png")
+
+	nivel1.iniciar()
+
+	// game.showAttributes(pepita) //Debug
+
+	game.start()
+}
