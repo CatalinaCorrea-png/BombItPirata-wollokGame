@@ -47,6 +47,19 @@ class Explosion {
   
 }
 
+class Muerte {
+  var property position
+  method image() = "skull.png"
+
+  method muere(jugador) {
+    game.schedule(1000,{ game.addVisual(self)})
+    game.schedule(3000, {
+      game.removeVisual(jugador) 
+      game.removeVisual(self) 
+    })
+  }
+}
+
 
 /// OBJETOS COLISIONES
 class ObjetoNoSolido {
@@ -55,22 +68,66 @@ class ObjetoNoSolido {
 
 class Barril inherits ObjetoNoSolido() {
   // var property position = game.at(10,1)
+  var property puntos = 50
   method image() = "Barrel.png"
 }
 class BotellaAzul inherits ObjetoNoSolido {
   // var property position = game.at(11,1)
+  var property puntos = 10
   method image() = "BlueBottle.png"
 }
 class BotellaRoja inherits ObjetoNoSolido {
   // var property position = game.at(12,1)
+  var property puntos = 15
   method image() = "RedBottle.png"
 }
 class Silla inherits ObjetoNoSolido {
   // var property position = game.at(13,1)
+  var property puntos = 25
   method image() = "chair.png"
 }
 
 class Bloque {
   var property position
   method image() = "solid-1.png"
+}
+
+
+
+/// BONUS (capaz no es necesario la superclase, pero vemos)
+class Bonus {
+  var property position
+  var property bonuses = #{AumentoExplosion,VidaMas,PuntosDobles}
+
+  // IDEA: 
+  // Cuando explota algo, hay una posibilidad RANDOM de que large BONUS (el objeto que explotó)
+  // Despues se elije el bonus con otro random. del 0-2 s(3 opciones)
+
+}
+
+class AumentoExplosion inherits Bonus {
+  method teEncontro(jugador) {
+    self.darBonus(jugador)
+  }
+  method darBonus(jugador) {
+    jugador.aumExplosion()
+  }
+}
+//---------------
+class VidaMas inherits Bonus {
+  method teEncontro(jugador) {
+    self.darBonus(jugador)
+  }
+  method darBonus(jugador) {
+    jugador.vidaMas()
+  }
+}
+//---------------
+class PuntosDobles inherits Bonus {
+  method teEncontro(jugador) {
+    self.darBonus(jugador)
+  }
+  method darBonus(jugador) {
+    jugador.puntosDobles()
+  }
 }
