@@ -87,3 +87,38 @@ class Player {
 
 const player1 = new Player(position = game.at(7,1), imagen = "player-1-idle.png", imagen2 = "player-1-run-2.png", imagenDead = "player-1-dead.png")
 const player2 = new Player(position = game.at(21,1), imagen =  "player-2-idle.png", imagen2 = "player-2-run-2.png", imagenDead = "player-2-dead.png")
+
+// Constructor
+class Wall {
+    var property image = 'solid-1.png'
+    var property position
+    
+    method action() {
+        //no pasar
+    }
+}
+object constructor {
+    var property positions = [
+        [7,10],
+        [8,2],[8,5],[8,7],
+        [9,3],[9,7],
+        [10,1],[10,7],
+        [11,3],[11,5],[11,9],
+        [12,1],[12,2],[12,7],
+        [13,6],[13,7],[13,8],[13,12],
+        [14,4],[14,7],[14,8],[14,10],
+        [15,2],[15,10],[15,12],
+        [16,7],
+        [17,11],
+        [18,1],[18,13],
+        [19,3],[19,5],[19,9],[19,11],
+        [20,2],[20,5],[20,7],[20,12],
+        [21,4]]
+
+    method wall_gen() {
+        positions.forEach({ n => 
+            const block = new Wall(position = game.at(n.get(0), n.get(1)))
+            game.addVisual(block)
+        })
+    }
+}
