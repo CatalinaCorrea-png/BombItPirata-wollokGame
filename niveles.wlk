@@ -17,9 +17,9 @@ object config {
 
   method configurarTeclas() {
     /// PLAYER 1:
-    // keyboard.c().onPressDo({ player1.aumExplosion() })
-    // keyboard.g().onPressDo({ player1.perderVida() })
-    // keyboard.v().onPressDo({ if(player1.tieneVida()) player1.vidaMas() })
+    keyboard.c().onPressDo({ player1.aumExplosion() })
+    keyboard.g().onPressDo({ player1.perderVida() })
+    keyboard.v().onPressDo({ if(player1.tieneVida()) player1.vidaMas() })
 
     keyboard.a().onPressDo({ if(player1.limiteL() && player1.colisionL() && player1.tieneVida()) player1.moveTo(player1.position().left(1)) })
     keyboard.d().onPressDo({ if(player1.limiteR() && player1.colisionR() && player1.tieneVida()) player1.moveTo(player1.position().right(1)) })

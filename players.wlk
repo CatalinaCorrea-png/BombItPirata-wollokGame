@@ -10,7 +10,7 @@ class Player {
   var property puntaje = 0
   var property vidas = 3
     // Esto es admisible  ?
-  var property objNoColisionables = #{0,player1,player2}
+  var property objNoColisionables = #{0}
 
   method image() {
     if(!self.tieneVida()) {
@@ -71,7 +71,9 @@ class Player {
   }
 
   method vidaMas() {
-    if(!self.vidas().equals(3)) self.vidas(1)
+    if(!self.vidas().equals(3)) {
+      vidas += 1
+      }
   }
 
   method muere() {
