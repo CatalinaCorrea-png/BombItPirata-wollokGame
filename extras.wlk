@@ -14,7 +14,36 @@ object mapa {
 
   method image() = ""
 }
+object boton1 {
+  const property position = game.at(7,8)
 
+  method image() = "botonInicio.png"
+}
+object boton2 {
+  const property position = game.at(7,8)
+
+  method image() = "botonInicio_2.png"
+}
+object pausa {
+  const property position = game.at(9,3)
+
+  method image() = "fondoPausa1.png"  
+}
+object botonPausa1 {
+const property position = game.at(10,7)
+
+  method image() = "botonPausa1.png" 
+}
+object botonPausa2 {
+const property position = game.at(10,5)
+
+  method image() = "botonPausa2.png" 
+}
+object botonPausa3 {
+const property position = game.at(10,7)
+
+  method image() = "botonPausa3.png" 
+}
 class Bomba {
   var property position
 

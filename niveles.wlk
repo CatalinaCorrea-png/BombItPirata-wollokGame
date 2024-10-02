@@ -1,9 +1,34 @@
 import players.*
 import wollok.game.*
+import extras.*
 
+// Inicializar la pantalla de inicio
+object pantallas{
+
+  method iniciar(){
+    game.addVisual(boton1)
+    config.configurarTeclasInicio()
+  }
+  method pantallaPausa() {
+    game.addVisual(pausa)
+    game.addVisual(botonPausa1)
+    game.addVisual(botonPausa2)
+    config.configurarTeclasPausa()
+  }
+
+}
 object nivel1 {
 
   method iniciar() {
+    game.removeVisual(boton2)
+    game.addVisual(tableroPiso)
+    game.addVisual(tableroPuntajes)
+
+    game.addVisual(new Barril(position = game.at(10,1)))
+    game.addVisual(new BotellaAzul(position = game.at(11,1)))
+    game.addVisual(new BotellaRoja(position = game.at(12,1)))
+    game.addVisual(new Silla(position = game.at(13,1)))
+    game.addVisual(new Bloque(position = game.at(12,3)))
     // game.addVisual(mapa)
     game.addVisual(player1)
     game.addVisual(player2)
@@ -39,6 +64,11 @@ object config {
     keyboard.enter().onPressDo({ 
       if(player2.tieneVida()) player2.ponerBomba(player2.position()) 
     })
+    /// PAUSA
+    keyboard.p().onPressDo({
+      game.stop()
+      pantallas.pantallaPausa()
+    })
 
     game.onTick(1000, "seMueve", {self.random()})
   }
@@ -60,4 +90,18 @@ method movimiento(a) {
     game.onCollideDo(player2, { algo => algo.teEncontro(player2) })
   }
 
+  method configurarTeclasInicio() {
+    keyboard.space().onPressDo({
+      game.removeVisual(boton1)
+      game.addVisual(boton2)
+      game.schedule(110, {nivel1.iniciar()})
+      })
+  }
+  method configurarTeclasPausa() {
+      keyboard.l().onPressDo({
+        game.removeVisual(botonPausa1)
+        game.addVisual(botonPausa3)
+
+      })
+  }
 }
