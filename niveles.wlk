@@ -29,7 +29,6 @@ object config {
       if(player1.tieneVida()) player1.ponerBomba(player1.position()) 
       })
 
-
     /// PLAYER 2:
     keyboard.left().onPressDo({ if(player2.limiteL() && player2.colisionL() && player2.tieneVida()) player2.moveTo(player2.position().left(1)) })
     keyboard.right().onPressDo({ if(player2.limiteR() && player2.colisionR() && player2.tieneVida()) player2.moveTo(player2.position().right(1)) })
@@ -39,7 +38,20 @@ object config {
       if(player2.tieneVida()) player2.ponerBomba(player2.position()) 
     })
 
+    game.onTick(1000, "seMueve", {self.random()})
   }
+
+method random() {
+  const direcciones = [1,2,3,4]
+  self.movimiento(direcciones.anyOne())
+  }
+// USA EL moveTo DE CATALINA
+method movimiento(a) {
+  if (a == 1) {if(player2.limiteU() && player2.colisionU() && player2.tieneVida()) player2.moveTo(player2.position().up(1))}
+  if (a == 2) {if(player2.limiteD() && player2.colisionD() && player2.tieneVida()) player2.moveTo(player2.position().down(1))}
+  if (a == 3) {if(player2.limiteR() && player2.colisionR() && player2.tieneVida()) player2.moveTo(player2.position().right(1))}
+  if (a == 4) {if(player2.limiteL() && player2.colisionL() && player2.tieneVida()) player2.moveTo(player2.position().left(1))}
+}
 
   method configurarColisiones() {
     game.onCollideDo(player1, { algo => algo.teEncontro(player1) })
