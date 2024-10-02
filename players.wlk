@@ -28,10 +28,7 @@ class Player {
     else cambioImg = true
   }
 
-  method limiteL() = self.position().x().between(8, 21)
-  method limiteR() = self.position().x().between(7, 20)
-  method limiteU() = self.position().y().between(1, 12)
-  method limiteD() = self.position().y().between(2, 14)
+  method limBordes(nuevaPosicion) = nuevaPosicion.x().between(7, 21) && nuevaPosicion.y().between(1, 14)
 
   method colisionL() = self.esNoColisionable(game.getObjectsIn(game.at(self.position().x() - 1,self.position().y())))
 
@@ -42,8 +39,10 @@ class Player {
   method esNoColisionable(objSet) = objSet.isEmpty() || objNoColisionables.contains(objSet.asList().first())
 
   method moveTo(nuevaPosicion) {
+    if (self.limBordes(nuevaPosicion)){
 		  position = nuevaPosicion
       self.cambiarImg()
+    }
 	}
 
   method ponerBomba(posicion) {

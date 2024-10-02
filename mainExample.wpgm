@@ -25,6 +25,8 @@ program BombItPirata {
 	// game.showAttributes(pepita) //Debug
 
 	game.start()
+
+  keyboard.backspace().onPressDo({game.stop()})
 }
 
 // Se puede poner que el PJ no pueda poner bombas infinitas
