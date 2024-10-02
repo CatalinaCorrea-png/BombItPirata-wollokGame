@@ -10,7 +10,7 @@ class Player {
   var property puntaje = 0
   var property vidas = 3
     // Esto es admisible  ?
-  var property objNoColisionables = #{0}
+  var property objNoColisionables = #{0,player1,player2}
 
   method image() {
     if(!self.tieneVida()) {
@@ -71,9 +71,7 @@ class Player {
   }
 
   method vidaMas() {
-    if(!self.vidas().equals(3)) {
-      vidas += 1
-      }
+    if(!self.vidas().equals(3)) self.vidas(1)
   }
 
   method muere() {
@@ -88,7 +86,7 @@ class Player {
 }
 
 const player1 = new Player(position = game.at(7,1), imagen = "player-1-idle.png", imagen2 = "player-1-run-2.png", imagenDead = "player-1-dead.png")
-const player2 = new Player(position = game.at(21,1), imagen =  "player-2-idle.png", imagen2 = "player-2-run-2.png", imagenDead = "player-2-dead.png")
+const player2 = new Player(position = game.at(18,5), imagen =  "player-2-idle.png", imagen2 = "player-2-run-2.png", imagenDead = "player-2-dead.png")
 
 // Constructor
 class Wall {
