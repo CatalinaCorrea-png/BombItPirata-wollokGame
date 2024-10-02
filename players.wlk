@@ -11,7 +11,9 @@ class Player {
   var property vidas = 3
     // Esto es admisible  ?
   var property objNoColisionables = #{0,player1,player2}
+  method esColisionable() = true
 
+  // IMAGEN
   method image() {
     if(!self.tieneVida()) {
       return imagenDead
@@ -21,25 +23,22 @@ class Player {
       return imagen2
     }
   }
-  
-  
   method cambiarImg() {
     if(cambioImg) cambioImg = false
     else cambioImg = true
   }
 
-  method limBordes(nuevaPosicion) = nuevaPosicion.x().between(7, 21) && nuevaPosicion.y().between(1, 14)
+  // COLISIONES
+  method limBordes(nuevaPosicion) = nuevaPosicion.x().between(7, 21) && nuevaPosicion.y().between(1, 13)
 
-  method colisionL() = self.esNoColisionable(game.getObjectsIn(game.at(self.position().x() - 1,self.position().y())))
-
-  method colisionR() = game.getObjectsIn(game.at(self.position().x() + 1,self.position().y())).isEmpty()
-  method colisionU() = game.getObjectsIn(game.at(self.position().x(),self.position().y() + 1)).isEmpty()
-  method colisionD() = game.getObjectsIn(game.at(self.position().x(),self.position().y() - 1)).isEmpty()
-
-  method esNoColisionable(objSet) = objSet.isEmpty() || objNoColisionables.contains(objSet.asList().first())
-
+  method colisiones(nuevaPosicion) = self.esNoColisionable(game.getObjectsIn(nuevaPosicion))
+  method esNoColisionable(objSet) = objSet.isEmpty() || !objSet.asList().first().esColisionable() // ! Porque puede pasar si el obj NO esColisionable() (!false)
+  
+  method canMoveHere(nuevaPosicion) = self.limBordes(nuevaPosicion) && self.colisiones(nuevaPosicion) && self.tieneVida()
+  
+  // ACCIONES 
   method moveTo(nuevaPosicion) {
-    if (self.limBordes(nuevaPosicion)){
+    if (self.canMoveHere(nuevaPosicion)){
 		  position = nuevaPosicion
       self.cambiarImg()
     }
@@ -52,6 +51,7 @@ class Player {
     game.schedule(2500, {game.removeVisual(bomba)})
   }
 
+  // BONUSES
   method aumExplosion() {
     largoExplosion += 1
   }
@@ -60,6 +60,11 @@ class Player {
     game.say(jugador, "que onda pa")
   }
 
+  method vidaMas() {
+    if(!self.vidas().equals(3)) self.vidas(1)
+  }
+
+  // VIDA/MUERTE
   method tieneVida() = self.vidas() > 0
 
   method perderVida() {
@@ -67,10 +72,6 @@ class Player {
       vidas -= 1
     }
     self.muere()
-  }
-
-  method vidaMas() {
-    if(!self.vidas().equals(3)) self.vidas(1)
   }
 
   method muere() {
@@ -88,14 +89,6 @@ const player1 = new Player(position = game.at(7,1), imagen = "player-1-idle.png"
 const player2 = new Player(position = game.at(18,5), imagen =  "player-2-idle.png", imagen2 = "player-2-run-2.png", imagenDead = "player-2-dead.png")
 
 // Constructor
-class Wall {
-    var property image = 'solid-1.png'
-    var property position
-    
-    method action() {
-        //no pasar
-    }
-}
 object constructor {
     var property positions = [
         [7,10],

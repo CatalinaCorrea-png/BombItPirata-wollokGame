@@ -9,11 +9,6 @@ object tableroPuntajes {
 
   method image() = "wood-bg-80x600.png"
 }
-object mapa {
-  const property position = game.at(4,0)
-
-  method image() = ""
-}
 
 class Bomba {
   var property position
@@ -28,6 +23,8 @@ class Bomba {
       game.removeVisual(explosion)
     })
   }
+
+  method esColisionable() = true
 
 }
 
@@ -44,6 +41,13 @@ class Explosion {
     return "explosion3.png"  
    }
   }
+
+  method esColisionable() = false
+  
+  // method teEncontro(player) {
+  //   player.perderVida()
+  // }
+
   
 }
 
@@ -58,15 +62,32 @@ class Muerte {
       game.removeVisual(self) 
     })
   }
+
+    method esColisionable() = false
+
+    method teEncontro(player) = null
 }
 
 
 /// OBJETOS COLISIONES
 class ObjetoNoSolido {
   var property position
+  // var property bonuses = #{AumentoExplosion,VidaMas,PuntosDobles} //Esta en class Bonus
+  method esColisionable() = true
+
+  method seRompe() {
+    self.dropea()
+    game.removeVisual(self)
+  }
+
+  method dropea() {
+    // RANDOM PARA VER SI DROPEA O NO
+    // De ahi va a la clase bonus para elegir qué se dropea? o se elige acá con otro random
+
+  }
 }
 
-class Barril inherits ObjetoNoSolido() {
+class Barril inherits ObjetoNoSolido {
   // var property position = game.at(10,1)
   var property puntos = 50
   method image() = "Barrel.png"
@@ -87,17 +108,20 @@ class Silla inherits ObjetoNoSolido {
   method image() = "chair.png"
 }
 
-class Bloque {
-  var property position
-  method image() = "solid-1.png"
+class Wall {
+    var property position
+    var property image = 'solid-1.png'
+    
+    method esColisionable() = true
 }
-
 
 
 /// BONUS (capaz no es necesario la superclase, pero vemos)
 class Bonus {
   var property position
   var property bonuses = #{AumentoExplosion,VidaMas,PuntosDobles}
+
+  method esColisionable() = false
 
   // IDEA: 
   // Cuando explota algo, hay una posibilidad RANDOM de que large BONUS (el objeto que explotó)
