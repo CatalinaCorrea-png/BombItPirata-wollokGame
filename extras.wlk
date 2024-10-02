@@ -48,7 +48,6 @@ class Explosion {
   //   player.perderVida()
   // }
 
-  
 }
 
 class Muerte {
@@ -67,6 +66,31 @@ class Muerte {
 
     method teEncontro(player) = null
 }
+
+class Vidas {
+  var property position
+  const player
+  method image() {
+    if(player.vidas() >= 3){
+      return "HealthBar-3.png"
+    } else if(player.vidas() == 2){
+      return "HealthBar-2.png"
+    } else if(player.vidas() == 1){
+      return "HealthBar-1.png"
+    } else {
+      return "HealthBar-0.png"
+    }
+  }
+}
+class CaraPlayer {
+  var property position
+  const player
+  const imagen
+  const imagen2
+  method image() = if(player.tieneVida()) imagen else imagen2
+}
+
+
 
 
 /// OBJETOS COLISIONES
@@ -154,4 +178,31 @@ class PuntosDobles inherits Bonus {
   method darBonus(jugador) {
     jugador.puntosDobles()
   }
+}
+
+// Constructor
+object constructor {
+    var property positions = [
+        [7,10],
+        [8,2],[8,5],[8,7],
+        [9,3],[9,7],
+        [10,1],[10,7],
+        [11,3],[11,5],[11,9],
+        [12,1],[12,2],[12,7],
+        [13,6],[13,7],[13,8],[13,12],
+        [14,4],[14,7],[14,8],[14,10],
+        [15,2],[15,10],[15,12],
+        [16,7],
+        [17,11],
+        [18,1],[18,13],
+        [19,3],[19,5],[19,9],[19,11],
+        [20,2],[20,5],[20,7],[20,12],
+        [21,4]]
+
+    method wall_gen() {
+        positions.forEach({ n => 
+            const block = new Wall(position = game.at(n.get(0), n.get(1)))
+            game.addVisual(block)
+        })
+    }
 }

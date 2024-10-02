@@ -1,4 +1,5 @@
 import players.*
+import extras.*
 import wollok.game.*
 
 object nivel1 {
@@ -9,6 +10,17 @@ object nivel1 {
     constructor.wall_gen()
     game.addVisual(player1)
     game.addVisual(player2)
+    game.addVisual(caraPlayer1)
+    game.addVisual(caraPlayer2)
+    game.addVisual(vidaPlayer1)
+    game.addVisual(vidaPlayer2)
+
+    /// Para Prueba. Despues van con un constructor
+    game.addVisual(new Barril(position = game.at(10,1)))
+    game.addVisual(new BotellaAzul(position = game.at(11,1)))
+    game.addVisual(new BotellaRoja(position = game.at(12,1)))
+    game.addVisual(new Silla(position = game.at(13,1)))
+
     config.configurarTeclas()
   }
 }
@@ -33,9 +45,9 @@ object config {
 
     /// PLAYER 2:
     keyboard.left().onPressDo({ player2.moveTo(player2.position().left(1)) })
-    keyboard.right().onPressDo({  player2.moveTo(player2.position().right(1)) })
-    keyboard.up().onPressDo({  player2.moveTo(player2.position().up(1)) })
-    keyboard.down().onPressDo({  player2.moveTo(player2.position().down(1)) })
+    keyboard.right().onPressDo({ player2.moveTo(player2.position().right(1)) })
+    keyboard.up().onPressDo({ player2.moveTo(player2.position().up(1)) })
+    keyboard.down().onPressDo({ player2.moveTo(player2.position().down(1)) })
     keyboard.enter().onPressDo({ 
       if(player2.tieneVida()) player2.ponerBomba(player2.position()) 
     })

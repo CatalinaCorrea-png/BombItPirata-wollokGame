@@ -15,12 +15,6 @@ program BombItPirata {
   // game.ground("logo1.png") // Esto lo use para ver el numero de celdas para medir las posiciones y tamaños.
 
 	nivel1.iniciar()
-
-  /// Para Prueba. Despues van en nivel1.iniciar()
-  game.addVisual(new Barril(position = game.at(10,1)))
-  game.addVisual(new BotellaAzul(position = game.at(11,1)))
-  game.addVisual(new BotellaRoja(position = game.at(12,1)))
-  game.addVisual(new Silla(position = game.at(13,1)))
 	// game.showAttributes(pepita) //Debug
 
 	game.start()
