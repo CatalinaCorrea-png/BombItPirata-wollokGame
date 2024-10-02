@@ -91,16 +91,17 @@ method movimiento(a) {
   }
 
   method configurarTeclasInicio() {
-    keyboard.space().onPressDo({
+    keyboard.q().onPressDo({
       game.removeVisual(boton1)
       game.addVisual(boton2)
       game.schedule(110, {nivel1.iniciar()})
       })
   }
   method configurarTeclasPausa() {
-      keyboard.up().onPressDo({
+      keyboard.u().onPressDo({
         game.removeVisual(botonPausa1)
         game.addVisual(botonPausa3)
+        game.schedule(100, {game.start()})
       })
   }
 }
