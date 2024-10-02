@@ -98,10 +98,9 @@ method movimiento(a) {
       })
   }
   method configurarTeclasPausa() {
-      keyboard.l().onPressDo({
+      keyboard.up().onPressDo({
         game.removeVisual(botonPausa1)
         game.addVisual(botonPausa3)
-
       })
   }
 }
