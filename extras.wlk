@@ -1,3 +1,4 @@
+import niveles.*
 
 object tableroPiso {
   const property position = game.at(6,0)
@@ -16,16 +17,14 @@ class Bomba {
   method image() = "bomb.png"
   method explota(largoExplosion) {
     const explosion = new Explosion(position = self.position().down(largoExplosion.min(3)).left(largoExplosion.min(3)), largo = largoExplosion.min(3))
-    game.schedule(2000, { 
+    game.schedule(2000, {
       game.addVisual(explosion)
     })
     game.schedule(3000, {
       game.removeVisual(explosion)
     })
   }
-
   method esColisionable() = true
-
 }
 
 class Explosion {
@@ -90,9 +89,6 @@ class CaraPlayer {
   method image() = if(player.tieneVida()) imagen else imagen2
 }
 
-
-
-
 /// OBJETOS COLISIONES
 class ObjetoNoSolido {
   var property position
@@ -116,21 +112,25 @@ class Barril inherits ObjetoNoSolido {
   var property puntos = 50
   method image() = "Barrel.png"
 }
+
 class BotellaAzul inherits ObjetoNoSolido {
   // var property position = game.at(11,1)
   var property puntos = 10
   method image() = "BlueBottle.png"
 }
+
 class BotellaRoja inherits ObjetoNoSolido {
   // var property position = game.at(12,1)
   var property puntos = 15
   method image() = "RedBottle.png"
 }
+
 class Silla inherits ObjetoNoSolido {
   // var property position = game.at(13,1)
   var property puntos = 25
   method image() = "chair.png"
 }
+
 
 class Wall {
     var property position
@@ -180,29 +180,87 @@ class PuntosDobles inherits Bonus {
   }
 }
 
-// Constructor
-object constructor {
-    var property positions = [
-        [7,10],
-        [8,2],[8,5],[8,7],
-        [9,3],[9,7],
-        [10,1],[10,7],
-        [11,3],[11,5],[11,9],
-        [12,1],[12,2],[12,7],
-        [13,6],[13,7],[13,8],[13,12],
-        [14,4],[14,7],[14,8],[14,10],
-        [15,2],[15,10],[15,12],
-        [16,7],
-        [17,11],
-        [18,1],[18,13],
-        [19,3],[19,5],[19,9],[19,11],
-        [20,2],[20,5],[20,7],[20,12],
-        [21,4]]
+// Constructores
+object item_constructor {
+  method wall_gen(_lista, kind) {
+    kind.construir(_lista)
+  }
+}
+object wall_constructor {
+  method construir(_lista) {
+    _lista.forEach({ n => 
+      const block = new Wall(position = game.at(n.get(0), n.get(1)))
+      game.addVisual(block)})
+  }
+}
+object barril_generator {
+  method construir(_lista) {
+    _lista.forEach({ n => 
+    const block = new Barril (position = game.at(n.get(0), n.get(1)))
+    free_board.saved().clear()
+    game.addVisual(block)})
+  }
+}
+object ba_generator {
+  method construir(_lista) {
+    _lista.forEach({ n=> 
+    const block = new BotellaAzul (position = game.at(n.get(0), n.get(1)))
+    free_board.saved().clear()
+    game.addVisual(block)})
+  }
+}
+object br_generator {
+  method construir(_lista) {
+    _lista.forEach({ n=> 
+    const block = new BotellaRoja (position = game.at(n.get(0), n.get(1)))
+    free_board.saved().clear()
+    game.addVisual(block)})
+  }
+}
+object silla_generator {
+  method construir(_lista) {
+    _lista.forEach({ n=> 
+    const block = new Silla(position = game.at(n.get(0), n.get(1)))
+    free_board.saved().clear()
+    game.addVisual(block)})
+  }
+}
 
-    method wall_gen() {
-        positions.forEach({ n => 
-            const block = new Wall(position = game.at(n.get(0), n.get(1)))
-            game.addVisual(block)
-        })
-    }
+// Espacios libres
+object free_board {
+  var property counter = 1
+  var property x = 0
+  var property y = 0
+  var property a = 0
+  var property b = 0
+  var property pos = []
+  var property saved = []
+
+  // 2 posiciones random
+  method pos_eval_x() {
+    a = 7.randomUpTo(21).truncate(0)
+    return a
+  }
+  method pos_eval_y() {
+    b = 1.randomUpTo(13).truncate(0)
+    return b
+  }
+  //Si no estan en la lista de listas, se setean x e y
+  method pos_eval(lvl) {
+    lvl.map().forEach({ n =>
+      pos = [self.pos_eval_x(), self.pos_eval_y()]
+      if(!(lvl.map().contains(pos)) and (counter <= 25) and !(canceled_slots.contains(pos))) {
+        x = pos.get(0)
+        y = pos.get(1)
+        saved.add([x,y]) // Se guardan las posiciones libres
+        counter += 1
+      }
+    })
+    // Para la proxima vuelta, estas tambien ya estan ocupadas
+    self.saved().forEach({ n => 
+      lvl.map().add(n)
+    })
+    counter = 1
+    pos.clear()
+  }
 }

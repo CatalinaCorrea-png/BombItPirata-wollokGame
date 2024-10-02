@@ -2,24 +2,60 @@ import players.*
 import extras.*
 import wollok.game.*
 
-object nivel1 {
+// Posiciones de arranque
+const canceled_slots = [
+  [7,1],[7,2],[7,12],[7,13],
+  [8,1],[8,13],
+  [20,1],[20,13],
+  [21,1],[21,2],[21,12],[21,13]
+]
 
+object nivel1 {
+  // nivel tiene las posiciones en una lista propia, no estan en el objeto 'constructor'
+  var property map = [
+        [7,10],
+        [8,2],[8,5],[8,7],
+        [9,3],[9,7],
+        [10,1],[10,7],
+        [11,3],[11,5],[11,9],
+        [12,1],[12,2],[12,7],
+        [13,6],[13,7],[13,8],[13,12],
+        [14,4],[14,7],[14,8],[14,10],
+        [15,2],[15,10],[15,12],
+        [16,7],
+        [17,11],
+        [18,1],[18,13],
+        [19,3],[19,5],[19,9],[19,11],
+        [20,2],[20,5],[20,7],[20,12],
+        [21,4]]
+  
   method iniciar() {
-    // game.addVisual(mapa)
+  
     // Construccion de nivel
-    constructor.wall_gen()
+    // No rompibles
+    item_constructor.wall_gen(self.map(), wall_constructor)
+    // Rompibles (como tu señora madre)
+    free_board.pos_eval(self)
+    item_constructor.wall_gen(free_board.saved(), barril_generator)
+    free_board.pos_eval(self)
+    item_constructor.wall_gen(free_board.saved(), ba_generator)
+    free_board.pos_eval(self)
+    item_constructor.wall_gen(free_board.saved(), br_generator)
+    
+
+    //Players y display
     game.addVisual(player1)
     game.addVisual(player2)
     game.addVisual(caraPlayer1)
     game.addVisual(caraPlayer2)
     game.addVisual(vidaPlayer1)
     game.addVisual(vidaPlayer2)
-
+  
     /// Para Prueba. Despues van con un constructor
-    game.addVisual(new Barril(position = game.at(10,1)))
-    game.addVisual(new BotellaAzul(position = game.at(11,1)))
-    game.addVisual(new BotellaRoja(position = game.at(12,1)))
-    game.addVisual(new Silla(position = game.at(13,1)))
+    // game.addVisual(new Barril(position = game.at(10,2)))
+    // game.addVisual(new BotellaAzul(position = game.at(11,1)))
+    // game.addVisual(new BotellaRoja(position = game.at(12,3)))
+    // game.addVisual(new Silla(position = game.at(13,1)))
 
     config.configurarTeclas()
   }
