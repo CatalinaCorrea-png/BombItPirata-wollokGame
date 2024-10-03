@@ -46,6 +46,8 @@ object nivel1 {
     //Players y display
     game.addVisual(player1)
     game.addVisual(player2)
+    game.addVisual(player3)
+    game.addVisual(player4)
     game.addVisual(caraPlayer1)
     game.addVisual(caraPlayer2)
     game.addVisual(vidaPlayer1)
@@ -97,15 +99,34 @@ method random() {
   }
 // USA EL moveTo DE CATALINA
 method movimiento(a) {
-  if (a == 1) {player2.moveTo(player2.position().up(1))}
-  if (a == 2) {player2.moveTo(player2.position().down(1))}
-  if (a == 3) {player2.moveTo(player2.position().right(1))}
-  if (a == 4) {player2.moveTo(player2.position().left(1))}
+  //player 2
+  if (a == 1) {
+    player2.moveTo(player2.position().up(1))
+    player3.moveTo(player3.position().down(1))
+    player4.moveTo(player4.position().left(1))
+  }
+  else if (a == 2) {
+    player2.moveTo(player2.position().down(1))
+    player3.moveTo(player3.position().up(1))
+    player4.moveTo(player4.position().right(1))
+  }
+  else if (a == 3) {
+    player2.moveTo(player2.position().right(1))
+    player3.moveTo(player3.position().left(1))
+    player4.moveTo(player4.position().down(1))
+  }
+  else (a == 4) {
+    player2.moveTo(player2.position().left(1))
+    player3.moveTo(player3.position().right(1))
+    player4.moveTo(player4.position().up(1))
+  }
 }
 
   method configurarColisiones() {
     game.onCollideDo(player1, { algo => algo.teEncontro(player1) })
     game.onCollideDo(player2, { algo => algo.teEncontro(player2) })
+    game.onCollideDo(player3, { algo => algo.teEncontro(player3) })
+    game.onCollideDo(player4, { algo => algo.teEncontro(player4) })
   }
 
 }

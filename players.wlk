@@ -86,7 +86,9 @@ class Player {
 }
 
 const player1 = new Player(position = game.at(7,1), imagen = "player-1-idle.png", imagen2 = "player-1-run-2.png", imagenDead = "player-1-dead.png")
-const player2 = new Player(position = game.at(18,5), imagen =  "player-2-idle.png", imagen2 = "player-2-run-2.png", imagenDead = "player-2-dead.png")
+const player2 = new Player(position = game.at(21,1), imagen =  "player-2-idle.png", imagen2 = "player-2-run-2.png", imagenDead = "player-2-dead.png")
+const player3 = new Player(position = game.at(7,13), imagen = "player-1-idle.png", imagen2 = "player-1-run-2.png", imagenDead = "player-1-dead.png")
+const player4 = new Player(position = game.at(21,13), imagen = "player-2-idle.png", imagen2 = "player-2-run-2.png", imagenDead = "player-2-dead.png")
 const vidaPlayer1 = new Vidas(position = game.at(2,9), player = player1)
 const vidaPlayer2 = new Vidas(position = game.at(2,4), player = player2)
 const caraPlayer1 = new CaraPlayer(position = game.at(3,10), player = player1, imagen = "player-1-head.png", imagen2 = "player-1-head-dead.png")
