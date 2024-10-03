@@ -98,6 +98,7 @@ class Wall {
     }
 }
 object constructor {
+  
     var property positions = [
         [7,10],
         [8,2],[8,5],[8,7],

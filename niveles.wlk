@@ -6,6 +6,7 @@ import extras.*
 object pantallas{
 
   method iniciar(){
+    game.boardGround("fondoInicio1.png")
     game.addVisual(boton1)
     config.configurarTeclasInicio()
   }
@@ -20,7 +21,8 @@ object pantallas{
 object nivel1 {
 
   method iniciar() {
-    game.removeVisual(boton2)
+    game.removeVisual("fondoInicio1.png")
+    game.boardGround("stone-floor-1.png")
     game.addVisual(tableroPiso)
     game.addVisual(tableroPuntajes)
 
@@ -33,16 +35,31 @@ object nivel1 {
     game.addVisual(player1)
     game.addVisual(player2)
     config.configurarTeclas()
+
     // Construccion de nivel
     constructor.wall_gen()
   }
+  method eliminarVisualesNivel() {
+    game.removeVisual(tableroPiso)
+    game.removeVisual(tableroPuntajes)
+    game.removeVisual(player1)
+    game.removeVisual(player2)
+    //game.removeVisual(Barril)
+    game.removeVisual(BotellaAzul)
+    game.removeVisual(BotellaRoja)
+    game.removeVisual(Silla)
+    game.removeVisual(Bloque)
+    //game.removeVisual(Wall)
+    // fijarse como hacer para que no aparezcan los walls y el barril
+  }
 }
 
-
-
 object config {
-
   method configurarTeclas() {
+    /// PAUSA
+    keyboard.p().onPressDo({
+      pantallas.pantallaPausa()
+    })
     /// PLAYER 1:
     keyboard.c().onPressDo({ player1.aumExplosion() })
     keyboard.g().onPressDo({ player1.perderVida() })
@@ -64,13 +81,9 @@ object config {
     keyboard.enter().onPressDo({ 
       if(player2.tieneVida()) player2.ponerBomba(player2.position()) 
     })
-    /// PAUSA
-    keyboard.p().onPressDo({
-      game.stop()
-      pantallas.pantallaPausa()
-    })
 
     game.onTick(1000, "seMueve", {self.random()})
+    
   }
 
 method random() {
@@ -90,18 +103,38 @@ method movimiento(a) {
     game.onCollideDo(player2, { algo => algo.teEncontro(player2) })
   }
 
+  // INICIAR JUEGO
   method configurarTeclasInicio() {
     keyboard.q().onPressDo({
       game.removeVisual(boton1)
       game.addVisual(boton2)
-      game.schedule(110, {nivel1.iniciar()})
+      game.schedule(200, {nivel1.iniciar()})
       })
   }
+  
   method configurarTeclasPausa() {
-      keyboard.u().onPressDo({
+    // REANUDAR JUEGO
+    keyboard.e().onPressDo({
+      game.removeVisual(botonPausa1)
+      game.addVisual(botonPausa3)
+      game.schedule(200, {
+        game.removeVisual(pausa)
+        game.removeVisual(botonPausa2)
+        game.removeVisual(botonPausa3)
+        })
+    })
+    // SALIR A PANTALLA INICIAL
+    keyboard.f().onPressDo({
+      game.removeVisual(botonPausa2)
+      game.addVisual(botonPausa4)
+      game.schedule(200, {
+        game.removeVisual(pausa)
         game.removeVisual(botonPausa1)
-        game.addVisual(botonPausa3)
-        game.schedule(100, {game.start()})
+        game.removeVisual(botonPausa4)
+        game.removeVisual(boton2)
+        nivel1.eliminarVisualesNivel()  // Eliminar los visuales del nivel 1
+        pantallas.iniciar()
       })
-  }
+    })
+    }
 }
