@@ -12,8 +12,6 @@ program BombItPirata {
   game.addVisual(tableroPiso)
   game.addVisual(tableroPuntajes)
 
-  // game.ground("logo1.png") // Esto lo use para ver el numero de celdas para medir las posiciones y tamaños.
-
 	nivel1.iniciar()
 	// game.showAttributes(pepita) //Debug
 

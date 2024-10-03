@@ -50,8 +50,12 @@ object nivel1 {
     game.addVisual(player4)
     game.addVisual(caraPlayer1)
     game.addVisual(caraPlayer2)
+    game.addVisual(caraPlayer3)
+    game.addVisual(caraPlayer4)
     game.addVisual(vidaPlayer1)
     game.addVisual(vidaPlayer2)
+    game.addVisual(vidaPlayer3)
+    game.addVisual(vidaPlayer4)
   
     /// Para Prueba. Despues van con un constructor
     // game.addVisual(new Barril(position = game.at(10,2)))
@@ -69,8 +73,8 @@ object config {
 
   method configurarTeclas() {
     /// PLAYER 1:
-    keyboard.c().onPressDo({ player1.aumExplosion() })
-    keyboard.g().onPressDo({ player1.perderVida() })
+    keyboard.c().onPressDo({ if(player1.tieneVida()) player1.aumExplosion() })
+    keyboard.g().onPressDo({ if(player1.tieneVida()) player1.perderVida() })
     keyboard.v().onPressDo({ if(player1.tieneVida()) player1.vidaMas() })
 
     keyboard.a().onPressDo({  player1.moveTo(player1.position().left(1)) }) 
@@ -101,22 +105,22 @@ method random() {
 method movimiento(a) {
   //player 2
   if (a == 1) {
-    player2.moveTo(player2.position().up(1))
+    // player2.moveTo(player2.position().up(1))
     player3.moveTo(player3.position().down(1))
     player4.moveTo(player4.position().left(1))
   }
   else if (a == 2) {
-    player2.moveTo(player2.position().down(1))
+    // player2.moveTo(player2.position().down(1))
     player3.moveTo(player3.position().up(1))
     player4.moveTo(player4.position().right(1))
   }
   else if (a == 3) {
-    player2.moveTo(player2.position().right(1))
+    // player2.moveTo(player2.position().right(1))
     player3.moveTo(player3.position().left(1))
     player4.moveTo(player4.position().down(1))
   }
   else (a == 4) {
-    player2.moveTo(player2.position().left(1))
+    // player2.moveTo(player2.position().left(1))
     player3.moveTo(player3.position().right(1))
     player4.moveTo(player4.position().up(1))
   }

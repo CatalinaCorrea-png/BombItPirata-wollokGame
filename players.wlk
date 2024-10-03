@@ -85,11 +85,15 @@ class Player {
 
 }
 
-const player1 = new Player(position = game.at(7,1), imagen = "player-1-idle.png", imagen2 = "player-1-run-2.png", imagenDead = "player-1-dead.png")
-const player2 = new Player(position = game.at(21,1), imagen =  "player-2-idle.png", imagen2 = "player-2-run-2.png", imagenDead = "player-2-dead.png")
-const player3 = new Player(position = game.at(7,13), imagen = "player-1-idle.png", imagen2 = "player-1-run-2.png", imagenDead = "player-1-dead.png")
-const player4 = new Player(position = game.at(21,13), imagen = "player-2-idle.png", imagen2 = "player-2-run-2.png", imagenDead = "player-2-dead.png")
-const vidaPlayer1 = new Vidas(position = game.at(2,9), player = player1)
-const vidaPlayer2 = new Vidas(position = game.at(2,4), player = player2)
-const caraPlayer1 = new CaraPlayer(position = game.at(3,10), player = player1, imagen = "player-1-head.png", imagen2 = "player-1-head-dead.png")
-const caraPlayer2 = new CaraPlayer(position = game.at(3,5), player = player2, imagen = "player-2-head.png", imagen2 = "player-2-head-dead.png")
+const player1 = new Player(position = game.at(7,1), imagen = "player-1-idle.png", imagen2 = "player-1-run.png", imagenDead = "player-1-dead.png")
+const player2 = new Player(position = game.at(21,1), imagen =  "player-2-idle.png", imagen2 = "player-2-run.png", imagenDead = "player-2-dead.png")
+const player3 = new Player(position = game.at(7,13), imagen = "player-3-idle.png", imagen2 = "player-3-run.png", imagenDead = "player-3-dead.png")
+const player4 = new Player(position = game.at(21,13), imagen = "player-4-idle.png", imagen2 = "player-4-run.png", imagenDead = "player-4-dead.png")
+const vidaPlayer1 = new Vidas(position = game.at(2,11), player = player1)
+const vidaPlayer2 = new Vidas(position = game.at(2,8), player = player2)
+const vidaPlayer3 = new Vidas(position = game.at(2,5), player = player3)
+const vidaPlayer4 = new Vidas(position = game.at(2,2), player = player4)
+const caraPlayer1 = new CaraPlayer(position = game.at(3,12), player = player1, imagen = "player-1-head.png", imagen2 = "player-1-head-dead.png")
+const caraPlayer2 = new CaraPlayer(position = game.at(3,9), player = player2, imagen = "player-2-head.png", imagen2 = "player-2-head-dead.png")
+const caraPlayer3 = new CaraPlayer(position = game.at(3,6), player = player3, imagen = "player-3-head.png", imagen2 = "player-3-head-dead.png")
+const caraPlayer4 = new CaraPlayer(position = game.at(3,3), player = player4, imagen = "player-4-head.png", imagen2 = "player-4-head-dead.png")
