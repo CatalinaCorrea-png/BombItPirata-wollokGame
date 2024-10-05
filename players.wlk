@@ -39,7 +39,7 @@ class Player {
   // ACCIONES 
   method moveTo(nuevaPosicion) {
     if (self.canMoveHere(nuevaPosicion)){
-		  position = nuevaPosicion
+      position = nuevaPosicion
       self.cambiarImg()
     }
 	}
@@ -81,7 +81,6 @@ class Player {
       // game.schedule(3000, game.removeVisual(self))
     }
   }
-
 
 }
 

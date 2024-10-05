@@ -32,13 +32,13 @@ class Explosion {
   var property largo
 
   method image() {
-   if(self.largo() == 1) {
-    return "explosion1.png"  
-   } else if(self.largo() == 2) {
-    return "explosion2.png"  
-   } else {
-    return "explosion3.png"  
-   }
+    if(self.largo() == 1) {
+      return "explosion1.png"  
+    } else if(self.largo() == 2) {
+      return "explosion2.png"  
+      } else {
+        return "explosion3.png"  
+      }
   }
 
   method esColisionable() = false
