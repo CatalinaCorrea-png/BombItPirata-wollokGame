@@ -9,7 +9,6 @@ const canceled_slots = [
   [20,1],[20,13],
   [21,1],[21,2],[21,12],[21,13]
 ]
-import extras.*
 
 // Inicializar la pantalla de inicio
 object pantallas{
@@ -55,7 +54,7 @@ object nivel1 {
     game.addVisual(new BotellaAzul(position = game.at(11,1)))
     game.addVisual(new BotellaRoja(position = game.at(12,1)))
     game.addVisual(new Silla(position = game.at(13,1)))
-    game.addVisual(new Bloque(position = game.at(12,3)))
+    game.addVisual(new Wall(position = game.at(12,3)))
   
     // Construccion de nivel
     // No rompibles
