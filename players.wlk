@@ -11,7 +11,9 @@ class Player {
   var property vidas = 3
     // Esto es admisible  ?
   var property objNoColisionables = #{0,player1,player2}
+  method esColisionable() = true
 
+  // IMAGEN
   method image() {
     if(!self.tieneVida()) {
       return imagenDead
@@ -21,29 +23,25 @@ class Player {
       return imagen2
     }
   }
-  
-  
   method cambiarImg() {
     if(cambioImg) cambioImg = false
     else cambioImg = true
   }
 
-  method limiteL() = self.position().x().between(8, 21)
-  method limiteR() = self.position().x().between(7, 20)
-  method limiteU() = self.position().y().between(1, 12)
-  method limiteD() = self.position().y().between(2, 14)
+  // COLISIONES
+  method limBordes(nuevaPosicion) = nuevaPosicion.x().between(7, 21) && nuevaPosicion.y().between(1, 13)
 
-  method colisionL() = self.esNoColisionable(game.getObjectsIn(game.at(self.position().x() - 1,self.position().y())))
-
-  method colisionR() = game.getObjectsIn(game.at(self.position().x() + 1,self.position().y())).isEmpty()
-  method colisionU() = game.getObjectsIn(game.at(self.position().x(),self.position().y() + 1)).isEmpty()
-  method colisionD() = game.getObjectsIn(game.at(self.position().x(),self.position().y() - 1)).isEmpty()
-
-  method esNoColisionable(objSet) = objSet.isEmpty() || objNoColisionables.contains(objSet.asList().first())
-
+  method colisiones(nuevaPosicion) = self.esNoColisionable(game.getObjectsIn(nuevaPosicion))
+  method esNoColisionable(objSet) = objSet.isEmpty() || !objSet.asList().first().esColisionable() // ! Porque puede pasar si el obj NO esColisionable() (!false)
+  
+  method canMoveHere(nuevaPosicion) = self.limBordes(nuevaPosicion) && self.colisiones(nuevaPosicion) && self.tieneVida()
+  
+  // ACCIONES 
   method moveTo(nuevaPosicion) {
-		  position = nuevaPosicion
+    if (self.canMoveHere(nuevaPosicion)){
+      position = nuevaPosicion
       self.cambiarImg()
+    }
 	}
 
   method ponerBomba(posicion) {
@@ -53,6 +51,7 @@ class Player {
     game.schedule(2500, {game.removeVisual(bomba)})
   }
 
+  // BONUSES
   method aumExplosion() {
     largoExplosion += 1
   }
@@ -61,6 +60,11 @@ class Player {
     game.say(jugador, "que onda pa")
   }
 
+  method vidaMas() {
+    if(!self.vidas().equals(3)) self.vidas(1)
+  }
+
+  // VIDA/MUERTE
   method tieneVida() = self.vidas() > 0
 
   method perderVida() {
@@ -68,10 +72,6 @@ class Player {
       vidas -= 1
     }
     self.muere()
-  }
-
-  method vidaMas() {
-    if(!self.vidas().equals(3)) self.vidas(1)
   }
 
   method muere() {
@@ -82,44 +82,17 @@ class Player {
     }
   }
 
-
 }
 
-const player1 = new Player(position = game.at(7,1), imagen = "player-1-idle.png", imagen2 = "player-1-run-2.png", imagenDead = "player-1-dead.png")
-const player2 = new Player(position = game.at(18,5), imagen =  "player-2-idle.png", imagen2 = "player-2-run-2.png", imagenDead = "player-2-dead.png")
-
-// Constructor
-class Wall {
-    var property image = 'solid-1.png'
-    var property position
-    
-    method action() {
-        //no pasar
-    }
-}
-object constructor {
-  
-    var property positions = [
-        [7,10],
-        [8,2],[8,5],[8,7],
-        [9,3],[9,7],
-        [10,1],[10,7],
-        [11,3],[11,5],[11,9],
-        [12,1],[12,2],[12,7],
-        [13,6],[13,7],[13,8],[13,12],
-        [14,4],[14,7],[14,8],[14,10],
-        [15,2],[15,10],[15,12],
-        [16,7],
-        [17,11],
-        [18,1],[18,13],
-        [19,3],[19,5],[19,9],[19,11],
-        [20,2],[20,5],[20,7],[20,12],
-        [21,4]]
-
-    method wall_gen() {
-        positions.forEach({ n => 
-            const block = new Wall(position = game.at(n.get(0), n.get(1)))
-            game.addVisual(block)
-        })
-    }
-}
+const player1 = new Player(position = game.at(7,1), imagen = "player-1-idle.png", imagen2 = "player-1-run.png", imagenDead = "player-1-dead.png")
+const player2 = new Player(position = game.at(21,1), imagen =  "player-2-idle.png", imagen2 = "player-2-run.png", imagenDead = "player-2-dead.png")
+const player3 = new Player(position = game.at(7,13), imagen = "player-3-idle.png", imagen2 = "player-3-run.png", imagenDead = "player-3-dead.png")
+const player4 = new Player(position = game.at(21,13), imagen = "player-4-idle.png", imagen2 = "player-4-run.png", imagenDead = "player-4-dead.png")
+const vidaPlayer1 = new Vidas(position = game.at(2,11), player = player1)
+const vidaPlayer2 = new Vidas(position = game.at(2,8), player = player2)
+const vidaPlayer3 = new Vidas(position = game.at(2,5), player = player3)
+const vidaPlayer4 = new Vidas(position = game.at(2,2), player = player4)
+const caraPlayer1 = new CaraPlayer(position = game.at(3,12), player = player1, imagen = "player-1-head.png", imagen2 = "player-1-head-dead.png")
+const caraPlayer2 = new CaraPlayer(position = game.at(3,9), player = player2, imagen = "player-2-head.png", imagen2 = "player-2-head-dead.png")
+const caraPlayer3 = new CaraPlayer(position = game.at(3,6), player = player3, imagen = "player-3-head.png", imagen2 = "player-3-head-dead.png")
+const caraPlayer4 = new CaraPlayer(position = game.at(3,3), player = player4, imagen = "player-4-head.png", imagen2 = "player-4-head-dead.png")

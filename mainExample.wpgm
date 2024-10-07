@@ -7,11 +7,10 @@ program BombItPirata {
 	game.title("Pepita")
 	game.height(15)
 	game.width(25)
-  game.cellSize(40)
-  game.boardGround("stone-floor-1.png")
-  //game.boardGround("fondoInicio1.png")
-  //game.addVisual(tableroPiso)
-  //game.addVisual(tableroPuntajes)
+	game.cellSize(40)
+	game.boardGround("stone-floor-1.png")
+	game.addVisual(tableroPiso)
+	game.addVisual(tableroPuntajes)
 
   /// Para Prueba. Despues van en nivel1.iniciar()
   //game.addVisual(new Barril(position = game.at(10,1)))
@@ -27,8 +26,9 @@ program BombItPirata {
 	// game.showAttributes(pepita) //Debug
 
 	game.start()
-}
 
+	keyboard.backspace().onPressDo({game.stop()})
+}
 // Se puede poner que el PJ no pueda poner bombas infinitas
 // en los niveles posteriores los bots se mueven mas rapido
 // se puede poner un if booleano para que funcione la "IA" o que juegue player 2
