@@ -4,6 +4,10 @@ object tableroPiso {
 
   method image() = "wood-bg-680x600.png"
 }
+object pantallaInicio {
+  const property position = game.at(0,0)
+  method image() = "fondoPantallaInicio.png"
+}
 object tableroPuntajes {
   const property position = game.at(2,0)
 
@@ -17,12 +21,12 @@ object mapa {
 object boton1 {
   const property position = game.at(8,5)
 
-  method image() = "BotonInicio.png"
+  method image() = "boton_inicio.png"
 }
 object boton2 {
   const property position = game.at(8,5)
 
-  method image() = "BotonInicio2.png"
+  method image() = "boton_inicio2.png"
 }
 object pausa {
   const property position = game.at(9,3)
@@ -49,6 +53,7 @@ object botonPausa4 {
 
   method image() = "botonPausa4.png" 
 }
+
 class Bomba {
   var property position
 
