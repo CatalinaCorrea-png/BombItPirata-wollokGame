@@ -94,14 +94,13 @@ object nivel1 {
 }
 
 object config {
-  method juegoEnPausa() = 1 // false
+  //method juegoEnPausa() = 1 // false
   method configurarTeclas() {
     /// PAUSA
-    keyboard.p().onPressDo({
-      if (!self.juegoEnPausa()) {
-        pantallas.pantallaPausa()  // Mostrar la pantalla de pausa
-      }
-      })
+    keyboard.p().onPressDo({pantallas.pantallaPausa()})
+      //if (!self.juegoEnPausa()) {
+        //pantallas.pantallaPausa()  // Mostrar la pantalla de pausa
+      //}})
     /// PLAYER 1:
     keyboard.c().onPressDo({ if(player1.tieneVida()) player1.aumExplosion() })
     keyboard.g().onPressDo({ if(player1.tieneVida()) player1.perderVida() })
@@ -196,7 +195,7 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
   }
   
   method configurarTeclasPausa() {
-    var enPausa = false
+    //var enPausa = false
     // REANUDAR JUEGO
     keyboard.e().onPressDo({
       game.removeVisual(botonPausa1)

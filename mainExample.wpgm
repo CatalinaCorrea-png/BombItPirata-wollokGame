@@ -9,8 +9,8 @@ program BombItPirata {
 	game.width(25)
 	game.cellSize(40)
 	game.boardGround("stone-floor-1.png")
-	game.addVisual(tableroPiso)
-	game.addVisual(tableroPuntajes)
+	//game.addVisual(tableroPiso)
+	//game.addVisual(tableroPuntajes)
 
 	pantallas.iniciar()
 	// game.showAttributes(pepita) //Debug
