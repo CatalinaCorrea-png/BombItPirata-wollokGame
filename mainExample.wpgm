@@ -21,3 +21,8 @@ program BombItPirata {
 // Se puede poner que el PJ no pueda poner bombas infinitas
 // en los niveles posteriores los bots se mueven mas rapido
 // se puede poner un if booleano para que funcione la "IA" o que juegue player 2
+
+// COSAS POR HACER
+// ARRGELAR TIEMPO QUE TARDA EN INICIAR EL JUEGO
+// AGREGAR PANTALLA PARA HACER MULTIJUGADOR
+// VER LO DE PAUSA

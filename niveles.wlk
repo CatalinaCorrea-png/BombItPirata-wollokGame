@@ -12,7 +12,6 @@ const canceled_slots = [
 
 // Inicializar la pantalla de inicio
 object pantallas{
-
   method iniciar(){
     game.addVisual(pantallaInicio)
     game.addVisual(boton1)
@@ -23,6 +22,12 @@ object pantallas{
     game.addVisual(botonPausa1)
     game.addVisual(botonPausa2)
     config.configurarTeclasPausa()
+  }
+  method modosDeJuego() {
+    game.addVisual(fondoModoJuego)
+    game.addVisual(botonUnJugador)
+    game.addVisual(botonDosJugadores)
+    config.configurarTeclasModosDeJuegos()
   }
 
 }
@@ -47,6 +52,13 @@ object nivel1 {
   
   method iniciar() {
     game.removeVisual(pantallaInicio)
+    game.removeVisual(fondoModoJuego)
+    game.removeVisual(boton1)
+    game.removeVisual(boton2)
+    game.removeVisual(botonUnJugador)
+    game.removeVisual(botonDosJugadores)
+    game.removeVisual(botonUnJugador2)
+    game.removeVisual(botonDosJugadores2)
     game.addVisual(tableroPiso)
     game.addVisual(tableroPuntajes)
 
@@ -94,36 +106,40 @@ object nivel1 {
 }
 
 object config {
-  //method juegoEnPausa() = 1 // false
+  var property juegoEnPausa = false 
+  var property enInicio = true
+
   method configurarTeclas() {
     /// PAUSA
-    keyboard.p().onPressDo({pantallas.pantallaPausa()})
-      //if (!self.juegoEnPausa()) {
-        //pantallas.pantallaPausa()  // Mostrar la pantalla de pausa
-      //}})
-    /// PLAYER 1:
-    keyboard.c().onPressDo({ if(player1.tieneVida()) player1.aumExplosion() })
-    keyboard.g().onPressDo({ if(player1.tieneVida()) player1.perderVida() })
-    keyboard.v().onPressDo({ if(player1.tieneVida()) player1.vidaMas() })
+    keyboard.p().onPressDo({
+      pantallas.pantallaPausa()
+      juegoEnPausa = true
+      })
 
-    keyboard.a().onPressDo({  player1.moveTo(player1.position().left(1)) }) 
-    keyboard.d().onPressDo({ player1.moveTo(player1.position().right(1)) }) 
-    keyboard.w().onPressDo({  player1.moveTo(player1.position().up(1)) }) 
-    keyboard.s().onPressDo({  player1.moveTo(player1.position().down(1)) }) 
+    /// PLAYER 1:
+    keyboard.c().onPressDo({ if(!juegoEnPausa and !enInicio and player1.tieneVida()) player1.aumExplosion() })
+    keyboard.g().onPressDo({ if(!juegoEnPausa and !enInicio and player1.tieneVida()) player1.perderVida() })
+    keyboard.v().onPressDo({ if(!juegoEnPausa and !enInicio and player1.tieneVida()) player1.vidaMas() })
+
+    keyboard.a().onPressDo({if (!juegoEnPausa and !enInicio) player1.moveTo(player1.position().left(1)) }) 
+    keyboard.d().onPressDo({if (!juegoEnPausa and !enInicio) player1.moveTo(player1.position().right(1)) }) 
+    keyboard.w().onPressDo({if (!juegoEnPausa and !enInicio)  player1.moveTo(player1.position().up(1)) }) 
+    keyboard.s().onPressDo({if (!juegoEnPausa and !enInicio)  player1.moveTo(player1.position().down(1)) }) 
     keyboard.space().onPressDo({ 
-      if(player1.tieneVida()) player1.ponerBomba(player1.position()) 
+      if(!juegoEnPausa and !enInicio and player1.tieneVida()) player1.ponerBomba(player1.position()) 
       })
 
     /// PLAYER 2:
-    keyboard.left().onPressDo({ player2.moveTo(player2.position().left(1)) })
-    keyboard.right().onPressDo({ player2.moveTo(player2.position().right(1)) })
-    keyboard.up().onPressDo({ player2.moveTo(player2.position().up(1)) })
-    keyboard.down().onPressDo({ player2.moveTo(player2.position().down(1)) })
+    keyboard.left().onPressDo({if (!juegoEnPausa and !enInicio) player2.moveTo(player2.position().left(1)) })
+    keyboard.right().onPressDo({if (!juegoEnPausa and !enInicio) player2.moveTo(player2.position().right(1)) })
+    keyboard.up().onPressDo({if (!juegoEnPausa and !enInicio) player2.moveTo(player2.position().up(1)) })
+    keyboard.down().onPressDo({if (!juegoEnPausa and !enInicio) player2.moveTo(player2.position().down(1)) })
     keyboard.enter().onPressDo({ 
-      if(player2.tieneVida()) player2.ponerBomba(player2.position()) 
+      if(!juegoEnPausa and !enInicio and player2.tieneVida()) player2.ponerBomba(player2.position()) 
     })
 
-    game.onTick(1000, "seMueve", {self.random()})
+    if (!juegoEnPausa and !enInicio) game.onTick(1000, "seMueve", {self.random()})
+    
   }
 
 method random() {
@@ -133,7 +149,7 @@ method random() {
   const direccionPlayer3 = direcciones.anyOne()
   const direccionPlayer4 = direcciones.anyOne()
 
-  self.movimiento(direccionPlayer2, direccionPlayer3, direccionPlayer4)
+  if (!juegoEnPausa and !enInicio) self.movimiento(direccionPlayer2, direccionPlayer3, direccionPlayer4)
 }
 
 method movimiento(direplayer2, direplayer3, direplayer4) {
@@ -161,7 +177,7 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
   } else if (direplayer3 == 4) {
     player3.moveTo(player3.position().right(1))
   } else if (direplayer3 == 5) {
-    if(player3.tieneVida()) player3.ponerBomba(player3.position()) 
+    if(!juegoEnPausa and !enInicio and player3.tieneVida()) player3.ponerBomba(player3.position()) 
   }
 
   // player4
@@ -174,7 +190,7 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
   } else if (direplayer4 == 4) {
     player4.moveTo(player4.position().right(1))
   } else if (direplayer4 == 5) {
-    if(player4.tieneVida()) player4.ponerBomba(player4.position()) 
+    if(!juegoEnPausa and !enInicio and player4.tieneVida()) player4.ponerBomba(player4.position()) 
   }
 }
 
@@ -190,12 +206,27 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
     keyboard.q().onPressDo({
       game.removeVisual(boton1)
       game.addVisual(boton2)
-      game.schedule(200, {nivel1.iniciar()})
+      game.schedule(200, {
+        //pantallas.inicio = false
+        pantallas.modosDeJuego()
+        })
       })
+  }
+  method reiniciarJuego() {
+    // Reinicializamos las variables del juego
+    juegoEnPausa = false
+    enInicio = true
+
+    // Inicializo de vuelta las posiciones
+    player1.moveTo(game.at(7,1))
+    player2.moveTo(game.at(21,1))
+    player3.moveTo(game.at(7,13))
+    player4.moveTo(game.at(21,13))
+    game.schedule(200, {pantallas.iniciar()})
+    
   }
   
   method configurarTeclasPausa() {
-    //var enPausa = false
     // REANUDAR JUEGO
     keyboard.e().onPressDo({
       game.removeVisual(botonPausa1)
@@ -205,18 +236,33 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
         game.removeVisual(botonPausa2)
         game.removeVisual(botonPausa3)
         })
+      juegoEnPausa = false
     })
     // SALIR A PANTALLA INICIAL
     keyboard.f().onPressDo({
       game.removeVisual(botonPausa2)
       game.addVisual(botonPausa4)
-      game.schedule(200, {
-        game.removeVisual(pausa)
-        game.removeVisual(botonPausa1)
-        game.removeVisual(botonPausa4)
-        game.removeVisual(boton2)
-        pantallas.iniciar()
-      })
+      game.removeVisual(pausa)
+      game.removeVisual(botonPausa1)
+      game.removeVisual(botonPausa4)
+      game.removeVisual(boton2)
+      self.reiniciarJuego()
     })
+    }
+    method configurarTeclasModosDeJuegos(){
+    // UN JUGADOR
+      keyboard.n().onPressDo({
+        game.removeVisual(botonUnJugador)
+        game.addVisual(botonUnJugador2)
+        enInicio = false
+        game.schedule(200, {nivel1.iniciar()})
+      })
+    // DOS JUGADORES
+      keyboard.m().onPressDo({
+        game.removeVisual(botonDosJugadores)
+        game.addVisual(botonDosJugadores2)
+        enInicio = false
+        game.schedule(200, {nivel1.iniciar()})
+      })
     }
 }
