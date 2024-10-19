@@ -7,20 +7,20 @@ program BombItPirata {
 	game.title("Pepita")
 	game.height(15)
 	game.width(25)
-  game.cellSize(40)
-  game.boardGround("stone-floor-1.png")
-  game.addVisual(tableroPiso)
-  game.addVisual(tableroPuntajes)
+	game.cellSize(40)
+	game.boardGround("stone-floor-1.png")
+	game.addVisual(tableroPiso)
+	game.addVisual(tableroPuntajes)
 
 	nivel1.iniciar()
 	// game.showAttributes(pepita) //Debug
 
 	game.start()
 
-  keyboard.backspace().onPressDo({game.stop()})
+	keyboard.backspace().onPressDo({game.stop()})
 }
-
-// Se puede poner que el PJ no pueda poner bombas infinitas
+// Se puede poner que el PJ no pueda poner bombas infinitas:
+//    - Agregar contador de bombar (visual)
 // en los niveles posteriores los bots se mueven mas rapido
 // se puede poner un if booleano para que funcione la "IA" o que juegue player 2
 // Los npc tienen que saber donde pusieron la bomba y alejarse, porque sino se van a morir. Pueden caminar más de una celda, para alejarse mas. Y q la bomba tarde mas en explotar.

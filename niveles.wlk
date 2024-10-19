@@ -56,14 +56,13 @@ object nivel1 {
     game.addVisual(vidaPlayer2)
     game.addVisual(vidaPlayer3)
     game.addVisual(vidaPlayer4)
-  
-    /// Para Prueba. Despues van con un constructor
-    // game.addVisual(new Barril(position = game.at(10,2)))
-    // game.addVisual(new BotellaAzul(position = game.at(11,1)))
-    // game.addVisual(new BotellaRoja(position = game.at(12,3)))
-    // game.addVisual(new Silla(position = game.at(13,1)))
+    // game.addVisual(new AumentoExplosion(position = game.at(10,2)))
+    // game.addVisual(new VidaMas(position = game.at(11,1)))
+    // game.addVisual(new PuntosDobles(position = game.at(12,3)))
+    // game.addVisual(new BombaMas(position = game.at(13,1)))
 
     config.configurarTeclas()
+    config.configurarColisiones()
   }
 }
 
@@ -94,35 +93,58 @@ object config {
       if(player2.tieneVida()) player2.ponerBomba(player2.position()) 
     })
 
-    game.onTick(1000, "seMueve", {self.random()})
+    game.onTick(850, "seMueve", {self.random()})
   }
 
 method random() {
-  const direcciones = [1,2,3,4]
-  self.movimiento(direcciones.anyOne())
-  }
-// USA EL moveTo DE CATALINA
-method movimiento(a) {
-  //player 2
-  if (a == 1) {
-    // player2.moveTo(player2.position().up(1))
-    player3.moveTo(player3.position().down(1))
-    player4.moveTo(player4.position().left(1))
-  }
-  else if (a == 2) {
+  const direcciones = [1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5] // se repiten para que sea menos probable que ponga una bomba
+  
+  const direccionPlayer2 = direcciones.anyOne()
+  const direccionPlayer3 = direcciones.anyOne()
+  const direccionPlayer4 = direcciones.anyOne()
+
+  self.movimiento(direccionPlayer2, direccionPlayer3, direccionPlayer4)
+}
+
+method movimiento(direplayer2, direplayer3, direplayer4) {
+  
+  // Player2 Para que se mueva el 2 descomentar esto
+  // if (direplayer2 == 1) {
     // player2.moveTo(player2.position().down(1))
-    player3.moveTo(player3.position().up(1))
-    player4.moveTo(player4.position().right(1))
-  }
-  else if (a == 3) {
-    // player2.moveTo(player2.position().right(1))
-    player3.moveTo(player3.position().left(1))
-    player4.moveTo(player4.position().down(1))
-  }
-  else (a == 4) {
+  // } else if (direplayer2 == 2) {
+    // player2.moveTo(player2.position().up(1))
+  // } else if (direplayer2 == 3) {
     // player2.moveTo(player2.position().left(1))
+  // } else if (direplayer2 == 4) {
+    // player2.moveTo(player2.position().right(1))
+  // } else if (direplayer2 == 5) {
+    // if(player2.tieneVida()) player2.ponerBomba(player2.position()) 
+  // }
+  
+  // player3
+  if (direplayer3 == 1) {
+    player3.moveTo(player3.position().down(1))
+  } else if (direplayer3 == 2) {
+    player3.moveTo(player3.position().up(1))
+  } else if (direplayer3 == 3) {
+    player3.moveTo(player3.position().left(1))
+  } else if (direplayer3 == 4) {
     player3.moveTo(player3.position().right(1))
+  } else if (direplayer3 == 5) {
+    if(player3.tieneVida()) player3.ponerBomba(player3.position()) 
+  }
+
+  // player4
+  if (direplayer4 == 1) {
+    player4.moveTo(player4.position().down(1))
+  } else if (direplayer4 == 2) {
     player4.moveTo(player4.position().up(1))
+  } else if (direplayer4 == 3) {
+    player4.moveTo(player4.position().left(1))
+  } else if (direplayer4 == 4) {
+    player4.moveTo(player4.position().right(1))
+  } else if (direplayer4 == 5) {
+    if(player4.tieneVida()) player4.ponerBomba(player4.position()) 
   }
 }
 
