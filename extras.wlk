@@ -19,15 +19,15 @@ object mapa {
 
   method image() = ""
 }
-object boton1 {
+object botonInicio1 {
   const property position = game.at(8,5)
 
-  method image() = "boton_inicio.png"
+  method image() = "botonPressEnter.png"
 }
-object boton2 {
+object botonInicio2 {
   const property position = game.at(8,5)
 
-  method image() = "boton_inicio2.png"
+  method image() = "botonPressEnter2.png"
 }
 object pausa {
   const property position = game.at(9,3)
@@ -44,12 +44,12 @@ object botonPausa2 {
 
   method image() = "botonPausa2.png" 
 }
-object botonPausa3 {
+object botonPausa1Color {
   const property position = game.at(10,7)
 
   method image() = "botonPausa3.png" 
 }
-object botonPausa4 {
+object botonPausa2Color {
   const property position = game.at(10,5)
 
   method image() = "botonPausa4.png" 
@@ -73,6 +73,14 @@ object botonUnJugador2 {
 object botonDosJugadores2 {
   const property position = game.at(12.5,4)
   method image() = "boton2Jugadores_2.png"
+}
+object flecha1 {
+  const property position = game.at(9,8)
+  method image() = "flechaPausa.png"
+}
+object flecha2 {
+  const property position = game.at(12.5,4)
+  method image() = "flecha.png"
 }
 class Bomba {
   var property position

@@ -1,3 +1,4 @@
+import niveles.*
 import extras.*
 
 class Player {

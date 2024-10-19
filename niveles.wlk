@@ -14,7 +14,7 @@ const canceled_slots = [
 object pantallas{
   method iniciar(){
     game.addVisual(pantallaInicio)
-    game.addVisual(boton1)
+    game.addVisual(botonInicio1)
     config.configurarTeclasInicio()
   }
   method pantallaPausa() {
@@ -51,22 +51,15 @@ object nivel1 {
         [21,4]]
   
   method iniciar() {
-    game.removeVisual(pantallaInicio)
-    game.removeVisual(fondoModoJuego)
-    game.removeVisual(boton1)
-    game.removeVisual(boton2)
-    game.removeVisual(botonUnJugador)
-    game.removeVisual(botonDosJugadores)
-    game.removeVisual(botonUnJugador2)
-    game.removeVisual(botonDosJugadores2)
     game.addVisual(tableroPiso)
     game.addVisual(tableroPuntajes)
-
+    
     game.addVisual(new Barril(position = game.at(10,1)))
     game.addVisual(new BotellaAzul(position = game.at(11,1)))
     game.addVisual(new BotellaRoja(position = game.at(12,1)))
     game.addVisual(new Silla(position = game.at(13,1)))
     game.addVisual(new Wall(position = game.at(12,3)))
+    
   
     // Construccion de nivel
     // No rompibles
@@ -78,9 +71,8 @@ object nivel1 {
     item_constructor.wall_gen(free_board.saved(), ba_generator)
     free_board.pos_eval(self)
     item_constructor.wall_gen(free_board.saved(), br_generator)
-    
 
-    //Players y display
+    	//Players y display
     game.addVisual(player1)
     game.addVisual(player2)
     game.addVisual(player3)
@@ -101,19 +93,17 @@ object nivel1 {
     // game.addVisual(new Silla(position = game.at(13,1)))
 
     config.configurarTeclas()
-
   }
 }
-
 object config {
   var property juegoEnPausa = false 
   var property enInicio = true
-
   method configurarTeclas() {
     /// PAUSA
     keyboard.p().onPressDo({
-      pantallas.pantallaPausa()
       juegoEnPausa = true
+      pantallas.pantallaPausa()
+      return juegoEnPausa
       })
 
     /// PLAYER 1:
@@ -203,11 +193,14 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
 
   // INICIAR JUEGO
   method configurarTeclasInicio() {
-    keyboard.q().onPressDo({
-      game.removeVisual(boton1)
-      game.addVisual(boton2)
+    // PARA INICIAR EL JUEGO
+    keyboard.enter().onPressDo({
+      game.removeVisual(botonInicio1)
+      game.addVisual(botonInicio2)
       game.schedule(200, {
-        //pantallas.inicio = false
+        game.removeVisual(pantallaInicio)
+        game.removeVisual(botonInicio1)
+        game.removeVisual(botonInicio2)
         pantallas.modosDeJuego()
         })
       })
@@ -218,51 +211,60 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
     enInicio = true
 
     // Inicializo de vuelta las posiciones
+    game.clear()
     player1.moveTo(game.at(7,1))
     player2.moveTo(game.at(21,1))
     player3.moveTo(game.at(7,13))
     player4.moveTo(game.at(21,13))
-    game.schedule(200, {pantallas.iniciar()})
-    
+    game.schedule(100, {pantallas.iniciar()})
   }
   
   method configurarTeclasPausa() {
+    var seleccionado 
     // REANUDAR JUEGO
-    keyboard.e().onPressDo({
-      game.removeVisual(botonPausa1)
-      game.addVisual(botonPausa3)
-      game.schedule(200, {
-        game.removeVisual(pausa)
-        game.removeVisual(botonPausa2)
-        game.removeVisual(botonPausa3)
-        })
-      juegoEnPausa = false
+    keyboard.up().onPressDo({
+      seleccionado = 1
+      game.removeVisual(botonPausa2Color)
+      game.addVisual(botonPausa1Color)
     })
     // SALIR A PANTALLA INICIAL
-    keyboard.f().onPressDo({
-      game.removeVisual(botonPausa2)
-      game.addVisual(botonPausa4)
-      game.removeVisual(pausa)
-      game.removeVisual(botonPausa1)
-      game.removeVisual(botonPausa4)
-      game.removeVisual(boton2)
-      self.reiniciarJuego()
+    keyboard.down().onPressDo({
+      seleccionado = 2
+      game.removeVisual(botonPausa1Color)
+      game.addVisual(botonPausa2Color)
+    })
+    keyboard.enter().onPressDo({
+      if (seleccionado == 1){
+        game.schedule(200, {
+        game.removeVisual(pausa)
+        game.removeVisual(botonPausa2)
+        game.removeVisual(botonPausa1)
+        game.removeVisual(botonPausa1Color)
+        game.removeVisual(botonPausa2Color)})
+        juegoEnPausa = false} else if (seleccionado == 2) {self.reiniciarJuego()}
     })
     }
     method configurarTeclasModosDeJuegos(){
-    // UN JUGADOR
+      // MODOS DE JUEGO
+      // UN JUGADOR
       keyboard.n().onPressDo({
-        game.removeVisual(botonUnJugador)
+        enInicio = false
         game.addVisual(botonUnJugador2)
-        enInicio = false
-        game.schedule(200, {nivel1.iniciar()})
+        game.schedule(100, {
+          game.removeVisual(botonUnJugador2)
+          game.clear()
+          nivel1.iniciar()
+        })
       })
-    // DOS JUGADORES
+        // DOS JUGADORES
       keyboard.m().onPressDo({
-        game.removeVisual(botonDosJugadores)
-        game.addVisual(botonDosJugadores2)
         enInicio = false
-        game.schedule(200, {nivel1.iniciar()})
+        game.addVisual(botonDosJugadores2)
+        game.schedule(100, {
+          game.removeVisual(botonDosJugadores2)
+          game.clear()
+          nivel1.iniciar()
+          })
       })
     }
 }
