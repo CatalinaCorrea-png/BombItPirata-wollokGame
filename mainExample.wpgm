@@ -19,6 +19,7 @@ program BombItPirata {
 
 	keyboard.backspace().onPressDo({game.stop()})
 }
-// Se puede poner que el PJ no pueda poner bombas infinitas
+// Se puede poner que el PJ no pueda poner bombas infinitas:
+//    - Agregar contador de bombar (visual)
 // en los niveles posteriores los bots se mueven mas rapido
 // se puede poner un if booleano para que funcione la "IA" o que juegue player 2

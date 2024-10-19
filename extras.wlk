@@ -1,5 +1,7 @@
+import players.*
 import niveles.*
 
+/// VISUALES TABLERO
 object tableroPiso {
   const property position = game.at(6,0)
 
@@ -9,44 +11,6 @@ object tableroPuntajes {
   const property position = game.at(2,0)
 
   method image() = "wood-bg-80x600.png"
-}
-
-class Bomba {
-  var property position
-
-  method image() = "bomb.png"
-  method explota(largoExplosion) {
-    const explosion = new Explosion(position = self.position().down(largoExplosion.min(3)).left(largoExplosion.min(3)), largo = largoExplosion.min(3))
-    game.schedule(2000, {
-      game.addVisual(explosion)
-    })
-    game.schedule(3000, {
-      game.removeVisual(explosion)
-    })
-  }
-  method esColisionable() = true
-}
-
-class Explosion {
-  var property position
-  var property largo
-
-  method image() {
-    if(self.largo() == 1) {
-      return "explosion1.png"  
-    } else if(self.largo() == 2) {
-      return "explosion2.png"  
-      } else {
-        return "explosion3.png"  
-      }
-  }
-
-  method esColisionable() = false
-  
-  // method teEncontro(player) {
-  //   player.perderVida()
-  // }
-
 }
 
 class Muerte {
@@ -89,22 +53,109 @@ class CaraPlayer {
   method image() = if(player.tieneVida()) imagen else imagen2
 }
 
+/// OBJETO BOMBA
+class Bomba {
+  var property position
+
+  method image() = "bomb.png"
+  method explota(largoExplosion, player) {
+    const explosion = new Explosion(position = self.position().down(largoExplosion.min(3)).left(largoExplosion.min(3)), largo = largoExplosion.min(3))
+    game.schedule(3000, {
+      game.addVisual(explosion)
+      explosion.colisiones()
+    })
+    game.schedule(4000, {
+      game.removeVisual(explosion)
+    })
+  }
+  method esColisionable() = true
+  method teEncontro(player) = true // No hace nada
+  method explota() = true // No hace nada
+
+}
+
+class Explosion {
+  var property position
+  var property largo 
+  const property indexLargos = []
+  method indexLargos() {
+    if(self.largo() == 1){
+      return [0,1]
+    } else if (self.largo() == 2){
+      return [0,1,2]
+    }else {
+      return [0,1,2,3]
+    }
+  }
+
+  method centro() {
+    return self.position().up(self.largo()).right(self.largo())
+  }
+
+  method image() {
+    if(self.largo() == 1) {
+      return "explosion1.png"  
+    } else if(self.largo() == 2) {
+      return "explosion2.png"  
+      } else {
+        return "explosion3.png"  
+      }
+  }
+
+  method esColisionable() = false
+  
+  method teEncontro(player) {
+    // player.perderVida()
+    self.colisiones()
+  }
+
+   method colisiones() {
+    var objetos = []
+
+    objetos = self.indexLargos().flatMap({ opLargo => game.getObjectsIn(self.centro().left(opLargo))})
+    if (!objetos.isEmpty()) objetos.forEach({obj => obj.explota()})
+    // objetos.clear()
+
+    objetos = self.indexLargos().flatMap({ opLargo => game.getObjectsIn(self.centro().right(opLargo))})
+    if (!objetos.isEmpty()) objetos.forEach({obj => obj.explota()})
+    // objetos.clear()
+
+    objetos = self.indexLargos().flatMap({ opLargo => game.getObjectsIn(self.centro().up(opLargo))})
+    if (!objetos.isEmpty()) objetos.forEach({obj => obj.explota()})
+    // objetos.clear()
+
+    objetos = self.indexLargos().flatMap({ opLargo => game.getObjectsIn(self.centro().down(opLargo))})
+    if (!objetos.isEmpty()) objetos.forEach({obj => obj.explota()})
+    // objetos.clear()
+    
+    }
+
+}
+
 /// OBJETOS COLISIONES
 class ObjetoNoSolido {
   var property position
-  // var property bonuses = #{AumentoExplosion,VidaMas,PuntosDobles} //Esta en class Bonus
+  var property bonuses = #{new AumentoExplosion(position = self.position()),new VidaMas(position = self.position()), new PuntosDobles(position = self.position()),new BombaMas(position = self.position())} //Esta en class Bonus
   method esColisionable() = true
 
-  method seRompe() {
-    self.dropea()
+  method explota() {
     game.removeVisual(self)
+    if (self.dropea()){
+      self.addPowerup(bonuses.anyOne())
+    }
   }
 
   method dropea() {
+    const a = 1.randomUpTo(10).truncate(0)
+    return a.even()
     // RANDOM PARA VER SI DROPEA O NO
-    // De ahi va a la clase bonus para elegir qué se dropea? o se elige acá con otro random
-
+    // SI LA CONDICION ES TRUE, DROPEA.
   }
+
+  method addPowerup(powerup) {
+    game.addVisual(powerup)
+  }
+  
 }
 
 class Barril inherits ObjetoNoSolido {
@@ -135,52 +186,63 @@ class Silla inherits ObjetoNoSolido {
 class Wall {
     var property position
     var property image = 'solid-1.png'
+    var property puntos = 0
     
     method esColisionable() = true
+    method explota() = false
 }
 
 
-/// BONUS (capaz no es necesario la superclase, pero vemos)
-class Bonus {
+/// POWERUPS (capaz no es necesario la superclase, pero vemos)
+class Powerup {
   var property position
-  var property bonuses = #{AumentoExplosion,VidaMas,PuntosDobles}
 
   method esColisionable() = false
-
-  // IDEA: 
-  // Cuando explota algo, hay una posibilidad RANDOM de que large BONUS (el objeto que explotó)
-  // Despues se elije el bonus con otro random. del 0-2 s(3 opciones)
+  method explota() = true // No hace nada
 
 }
 
-class AumentoExplosion inherits Bonus {
+class AumentoExplosion inherits Powerup {
+
+  method image() = "powerup-exp.png"
+
   method teEncontro(jugador) {
-    self.darBonus(jugador)
-  }
-  method darBonus(jugador) {
     jugador.aumExplosion()
+    game.removeVisual(self)
   }
 }
 //---------------
-class VidaMas inherits Bonus {
+class VidaMas inherits Powerup {
+
+  method image() = "powerup-vida.png"
+
   method teEncontro(jugador) {
-    self.darBonus(jugador)
-  }
-  method darBonus(jugador) {
     jugador.vidaMas()
+    game.removeVisual(self)
   }
 }
 //---------------
-class PuntosDobles inherits Bonus {
+class PuntosDobles inherits Powerup {
+
+  method image() = "powerup-puntos.png"
+
   method teEncontro(jugador) {
-    self.darBonus(jugador)
-  }
-  method darBonus(jugador) {
     jugador.puntosDobles()
+    game.removeVisual(self)
+  }
+}
+//---------------
+class BombaMas inherits Powerup {
+
+  method image() = "powerup-bomb.png"
+
+  method teEncontro(jugador) {
+    jugador.addBomba()
+    game.removeVisual(self)
   }
 }
 
-// Constructores
+/// Constructores
 object item_constructor {
   method wall_gen(_lista, kind) {
     kind.construir(_lista)
@@ -242,7 +304,7 @@ object free_board {
     return a
   }
   method pos_eval_y() {
-    b = 1.randomUpTo(13).truncate(0)
+    b = 1.randomUpTo(14).truncate(0)
     return b
   }
   //Si no estan en la lista de listas, se setean x e y

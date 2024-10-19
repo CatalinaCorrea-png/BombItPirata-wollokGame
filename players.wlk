@@ -9,6 +9,9 @@ class Player {
   var property largoExplosion = 1
   var property puntaje = 0
   var property vidas = 3
+  var property bombas = 5
+  var property boolBomba = false
+
     // Esto es admisible  ?
   var property objNoColisionables = #{0,player1,player2}
   method esColisionable() = true
@@ -45,10 +48,22 @@ class Player {
 	}
 
   method ponerBomba(posicion) {
-    const bomba = new Bomba(position = posicion)
-    game.addVisual(bomba)
-    bomba.explota(largoExplosion.min(3))
-    game.schedule(2500, {game.removeVisual(bomba)})
+    if (self.puedePonerBomba()){
+      const bomba = new Bomba(position = posicion)
+      game.addVisual(bomba)
+      boolBomba = true
+      bombas -= 1
+      game.schedule(3000, {
+        game.removeVisual(bomba)
+        boolBomba = false})
+      bomba.explota(largoExplosion.min(3), self)
+    } else if(bombas == 0) {
+      game.say(self, "No tengo mas bombas!")
+    }
+  }
+
+  method puedePonerBomba() {
+    return bombas > 0 && !self.boolBomba()
   }
 
   // BONUSES
@@ -61,11 +76,23 @@ class Player {
   }
 
   method vidaMas() {
-    if(!self.vidas().equals(3)) self.vidas(1)
+    if(!self.vidas().equals(3)) vidas += 1
+  }
+
+  method puntosDobles() {
+    puntaje * 2
+  }
+  
+  method addBomba() {
+    bombas += 1
   }
 
   // VIDA/MUERTE
   method tieneVida() = self.vidas() > 0
+
+  method explota() {
+    self.perderVida()
+  }
 
   method perderVida() {
     if(self.tieneVida()){

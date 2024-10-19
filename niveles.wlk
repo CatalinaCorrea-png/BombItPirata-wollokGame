@@ -56,14 +56,13 @@ object nivel1 {
     game.addVisual(vidaPlayer2)
     game.addVisual(vidaPlayer3)
     game.addVisual(vidaPlayer4)
-  
-    /// Para Prueba. Despues van con un constructor
-    // game.addVisual(new Barril(position = game.at(10,2)))
-    // game.addVisual(new BotellaAzul(position = game.at(11,1)))
-    // game.addVisual(new BotellaRoja(position = game.at(12,3)))
-    // game.addVisual(new Silla(position = game.at(13,1)))
+    // game.addVisual(new AumentoExplosion(position = game.at(10,2)))
+    // game.addVisual(new VidaMas(position = game.at(11,1)))
+    // game.addVisual(new PuntosDobles(position = game.at(12,3)))
+    // game.addVisual(new BombaMas(position = game.at(13,1)))
 
     config.configurarTeclas()
+    config.configurarColisiones()
   }
 }
 
@@ -98,7 +97,7 @@ object config {
   }
 
 method random() {
-  const direcciones = [1, 1, 2, 2, 3, 3, 4, 4, 5] // se repiten para que sea menos probable que ponga una bomba
+  const direcciones = [1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5] // se repiten para que sea menos probable que ponga una bomba
   
   const direccionPlayer2 = direcciones.anyOne()
   const direccionPlayer3 = direcciones.anyOne()
