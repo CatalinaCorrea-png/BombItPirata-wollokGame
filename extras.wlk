@@ -8,9 +8,9 @@ object tableroPiso {
   method image() = "wood-bg-680x600.png"
 }
 object tableroPuntajes {
-  const property position = game.at(2,0)
+  const property position = game.at(1,0)
 
-  method image() = "wood-bg-80x600.png"
+  method image() = "wood-bg-160x600.png"
 }
 
 class Muerte {
@@ -53,13 +53,43 @@ class CaraPlayer {
   method image() = if(player.tieneVida()) imagen else imagen2
 }
 
+class BombasPlayer {
+  var property position
+  const property player
+
+  method image() {
+    if(player.bombas() == 0) return "nb0.png"
+    else if(player.bombas() == 1) return "nb1.png"
+    else if(player.bombas() == 2) return "nb2.png"
+    else if(player.bombas() == 3) return "nb3.png"
+    else if(player.bombas() == 4) return "nb4.png"
+    else if(player.bombas() == 5) return "nb5.png"
+    else if(player.bombas() == 6) return "nb6.png"
+    else if(player.bombas() == 7) return "nb7.png"
+    else if(player.bombas() == 8) return "nb8.png"
+    else return "nb9.png"
+  }
+}
+
+class PuntajePlayer {
+  var property position
+  const property player
+  const texto = {"          PUNTAJE: " + player.puntaje()}
+
+  method image() = "puntaje-bg.png"
+  method text() = texto.apply()
+  method textColor() = "FFFFFFFF"
+
+}
+
 /// OBJETO BOMBA
 class Bomba {
   var property position
+  var property player
 
   method image() = "bomb.png"
-  method explota(largoExplosion, player) {
-    const explosion = new Explosion(position = self.position().down(largoExplosion.min(3)).left(largoExplosion.min(3)), largo = largoExplosion.min(3))
+  method explota(largoExplosion) {
+    const explosion = new Explosion(position = self.position().down(largoExplosion.min(3)).left(largoExplosion.min(3)), largo = largoExplosion.min(3), player = player)
     game.schedule(3000, {
       game.addVisual(explosion)
       explosion.colisiones()
@@ -69,13 +99,14 @@ class Bomba {
     })
   }
   method esColisionable() = true
-  method teEncontro(player) = true // No hace nada
-  method explota() = true // No hace nada
+  method teEncontro(_player) = true // No hace nada
+  method seRompe(_player) = true // No hace nada
 
 }
 
 class Explosion {
   var property position
+  var property player
   var property largo 
   const property indexLargos = []
   method indexLargos() {
@@ -104,7 +135,7 @@ class Explosion {
 
   method esColisionable() = false
   
-  method teEncontro(player) {
+  method teEncontro(_player) {
     // player.perderVida()
     self.colisiones()
   }
@@ -113,19 +144,19 @@ class Explosion {
     var objetos = []
 
     objetos = self.indexLargos().flatMap({ opLargo => game.getObjectsIn(self.centro().left(opLargo))})
-    if (!objetos.isEmpty()) objetos.forEach({obj => obj.explota()})
+    if (!objetos.isEmpty()) objetos.forEach({obj => obj.seRompe(player)})
     // objetos.clear()
 
     objetos = self.indexLargos().flatMap({ opLargo => game.getObjectsIn(self.centro().right(opLargo))})
-    if (!objetos.isEmpty()) objetos.forEach({obj => obj.explota()})
+    if (!objetos.isEmpty()) objetos.forEach({obj => obj.seRompe(player)})
     // objetos.clear()
 
     objetos = self.indexLargos().flatMap({ opLargo => game.getObjectsIn(self.centro().up(opLargo))})
-    if (!objetos.isEmpty()) objetos.forEach({obj => obj.explota()})
+    if (!objetos.isEmpty()) objetos.forEach({obj => obj.seRompe(player)})
     // objetos.clear()
 
     objetos = self.indexLargos().flatMap({ opLargo => game.getObjectsIn(self.centro().down(opLargo))})
-    if (!objetos.isEmpty()) objetos.forEach({obj => obj.explota()})
+    if (!objetos.isEmpty()) objetos.forEach({obj => obj.seRompe(player)})
     // objetos.clear()
     
     }
@@ -138,7 +169,7 @@ class ObjetoNoSolido {
   var property bonuses = #{new AumentoExplosion(position = self.position()),new VidaMas(position = self.position()), new PuntosDobles(position = self.position()),new BombaMas(position = self.position())} //Esta en class Bonus
   method esColisionable() = true
 
-  method explota() {
+  method seRompe(player) {
     game.removeVisual(self)
     if (self.dropea()){
       self.addPowerup(bonuses.anyOne())
@@ -162,24 +193,40 @@ class Barril inherits ObjetoNoSolido {
   // var property position = game.at(10,1)
   var property puntos = 50
   method image() = "Barrel.png"
+  override method seRompe(player) {
+    super(player)
+    player.sumarPuntos(self.puntos())
+  }
 }
 
 class BotellaAzul inherits ObjetoNoSolido {
   // var property position = game.at(11,1)
   var property puntos = 10
   method image() = "BlueBottle.png"
+  override method seRompe(player) {
+    super(player)
+    player.sumarPuntos(self.puntos())
+  }
 }
 
 class BotellaRoja inherits ObjetoNoSolido {
   // var property position = game.at(12,1)
   var property puntos = 15
   method image() = "RedBottle.png"
+  override method seRompe(player) {
+    super(player)
+    player.sumarPuntos(self.puntos())
+  }
 }
 
 class Silla inherits ObjetoNoSolido {
   // var property position = game.at(13,1)
   var property puntos = 25
   method image() = "chair.png"
+  override method seRompe(player) {
+    super(player)
+    player.sumarPuntos(self.puntos())
+  }
 }
 
 
@@ -189,7 +236,7 @@ class Wall {
     var property puntos = 0
     
     method esColisionable() = true
-    method explota() = false
+    method seRompe(player) = false
 }
 
 
@@ -198,7 +245,7 @@ class Powerup {
   var property position
 
   method esColisionable() = false
-  method explota() = true // No hace nada
+  method seRompe(player) = true // No hace nada
 
 }
 

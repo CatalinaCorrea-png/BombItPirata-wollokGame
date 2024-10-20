@@ -56,6 +56,10 @@ object nivel1 {
     game.addVisual(vidaPlayer2)
     game.addVisual(vidaPlayer3)
     game.addVisual(vidaPlayer4)
+    game.addVisual(bombasPlayer1)
+    game.addVisual(bombasPlayer2)
+    game.addVisual(puntajePlayer1)
+    game.addVisual(puntajePlayer2)
     // game.addVisual(new AumentoExplosion(position = game.at(10,2)))
     // game.addVisual(new VidaMas(position = game.at(11,1)))
     // game.addVisual(new PuntosDobles(position = game.at(12,3)))
@@ -72,9 +76,9 @@ object config {
 
   method configurarTeclas() {
     /// PLAYER 1:
-    keyboard.c().onPressDo({ if(player1.tieneVida()) player1.aumExplosion() })
-    keyboard.g().onPressDo({ if(player1.tieneVida()) player1.perderVida() })
-    keyboard.v().onPressDo({ if(player1.tieneVida()) player1.vidaMas() })
+    // keyboard.c().onPressDo({ if(player1.tieneVida()) player1.aumExplosion() })
+    keyboard.g().onPressDo({ if(player1.tieneVida()) player1.addBomba() })
+    // keyboard.v().onPressDo({ if(player1.tieneVida()) player1.vidaMas() })
 
     keyboard.a().onPressDo({  player1.moveTo(player1.position().left(1)) }) 
     keyboard.d().onPressDo({ player1.moveTo(player1.position().right(1)) }) 
