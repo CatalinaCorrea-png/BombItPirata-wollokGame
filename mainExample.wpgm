@@ -12,7 +12,7 @@ program BombItPirata {
 	game.addVisual(tableroPiso)
 	game.addVisual(tableroPuntajes)
 
-	nivel1.iniciar()
+	nivel1.iniciar(true) // true = multiplayer // false = singleplyr
 	// game.showAttributes(pepita) //Debug
 
 	game.start()

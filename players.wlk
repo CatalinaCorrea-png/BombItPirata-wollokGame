@@ -126,6 +126,7 @@ const player1 = new Player(position = game.at(7,1), imagen = "player-1-idle.png"
 const player2 = new Player(position = game.at(21,1), imagen =  "player-2-idle.png", imagen2 = "player-2-run.png", imagenDead = "player-2-dead.png")
 const player3 = new Player(position = game.at(7,13), imagen = "player-3-idle.png", imagen2 = "player-3-run.png", imagenDead = "player-3-dead.png", bombas = 100)
 const player4 = new Player(position = game.at(21,13), imagen = "player-4-idle.png", imagen2 = "player-4-run.png", imagenDead = "player-4-dead.png", bombas = 100)
+const players = #{player1,player2,player3,player4}
 const vidaPlayer1 = new Vidas(position = game.at(1,11), player = player1)
 const vidaPlayer2 = new Vidas(position = game.at(1,8), player = player2)
 const vidaPlayer3 = new Vidas(position = game.at(1,5), player = player3)

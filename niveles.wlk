@@ -11,6 +11,7 @@ const canceled_slots = [
 ]
 
 object nivel1 {
+  var property multiplayer = true
   // nivel tiene las posiciones en una lista propia, no estan en el objeto 'constructor'
   var property map = [
         [7,10],
@@ -29,8 +30,8 @@ object nivel1 {
         [20,2],[20,5],[20,7],[20,12],
         [21,4]]
   
-  method iniciar() {
-  
+  method iniciar(players) {
+    multiplayer = players
     // Construccion de nivel
     // No rompibles
     item_constructor.wall_gen(self.map(), wall_constructor)
@@ -89,13 +90,15 @@ object config {
       })
 
     /// PLAYER 2:
-    keyboard.left().onPressDo({ player2.moveTo(player2.position().left(1)) })
-    keyboard.right().onPressDo({ player2.moveTo(player2.position().right(1)) })
-    keyboard.up().onPressDo({ player2.moveTo(player2.position().up(1)) })
-    keyboard.down().onPressDo({ player2.moveTo(player2.position().down(1)) })
-    keyboard.enter().onPressDo({ 
-      if(player2.tieneVida()) player2.ponerBomba(player2.position()) 
-    })
+    if(!nivel1.multiplayer()){
+      keyboard.left().onPressDo({ player2.moveTo(player2.position().left(1)) })
+      keyboard.right().onPressDo({ player2.moveTo(player2.position().right(1)) })
+      keyboard.up().onPressDo({ player2.moveTo(player2.position().up(1)) })
+      keyboard.down().onPressDo({ player2.moveTo(player2.position().down(1)) })
+      keyboard.enter().onPressDo({ 
+        if(player2.tieneVida()) player2.ponerBomba(player2.position()) 
+      })
+    }
 
     game.onTick(850, "seMueve", {self.random()})
   }
@@ -113,16 +116,18 @@ method random() {
 method movimiento(direplayer2, direplayer3, direplayer4) {
   
   // Player2 Para que se mueva el 2 descomentar esto
-  // if (direplayer2 == 1) {
-    // player2.moveTo(player2.position().down(1))
-  // } else if (direplayer2 == 2) {
-    // player2.moveTo(player2.position().up(1))
-  // } else if (direplayer2 == 3) {
-    // player2.moveTo(player2.position().left(1))
-  // } else if (direplayer2 == 4) {
-    // player2.moveTo(player2.position().right(1))
-  // } else if (direplayer2 == 5) {
-    // if(player2.tieneVida()) player2.ponerBomba(player2.position()) 
+  // if(!nivel1.multiplayer()){
+  //   if (direplayer2 == 1) {
+  //     player2.moveTo(player2.position().down(1))
+  //   } else if (direplayer2 == 2) {
+  //     player2.moveTo(player2.position().up(1))
+  //   } else if (direplayer2 == 3) {
+  //     player2.moveTo(player2.position().left(1))
+  //   } else if (direplayer2 == 4) {
+  //     player2.moveTo(player2.position().right(1))
+  //   } else if (direplayer2 == 5) {
+  //     if(player2.tieneVida()) player2.ponerBomba(player2.position()) 
+  //   }
   // }
   
   // player3
