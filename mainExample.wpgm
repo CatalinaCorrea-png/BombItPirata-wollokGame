@@ -24,7 +24,7 @@ program BombItPirata {
 // se puede poner un if booleano para que funcione la "IA" o que juegue player 2
 
 // COSAS POR HACER
-// ARREGLAR TIEMPO QUE TARDA EN INICIAR EL JUEGO [WOLLOK ES UNA MIERDA], si lo incio al principio funciona pero se traba todo despues
+// ARREGLAR TIEMPO QUE TARDA EN INICIAR EL JUEGO [FALTA], si lo incio al principio funciona pero se traba todo despues
 // AGREGAR PANTALLA PARA HACER MULTIJUGADOR [LISTO]
 // VER LO DE PAUSA [LISTO]
 // CUANDO UN PERSONAJE PIERDE UNA VIDA Y SE REINICIA EL JUEGO, INICIALIZAR DE VUELTA EL TABLERO DE VIDAS
