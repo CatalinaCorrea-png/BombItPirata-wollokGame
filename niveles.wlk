@@ -53,13 +53,14 @@ object nivel1 {
   method iniciar() {
     game.addVisual(tableroPiso)
     game.addVisual(tableroPuntajes)
-    
+
+    /*
     game.addVisual(new Barril(position = game.at(10,1)))
     game.addVisual(new BotellaAzul(position = game.at(11,1)))
     game.addVisual(new BotellaRoja(position = game.at(12,1)))
     game.addVisual(new Silla(position = game.at(13,1)))
     game.addVisual(new Wall(position = game.at(12,3)))
-    
+    */
   
     // Construccion de nivel
     // No rompibles
@@ -103,8 +104,7 @@ object config {
     keyboard.p().onPressDo({
       juegoEnPausa = true
       pantallas.pantallaPausa()
-      return juegoEnPausa
-      })
+    })
 
     /// PLAYER 1:
     keyboard.c().onPressDo({ if(!juegoEnPausa and !enInicio and player1.tieneVida()) player1.aumExplosion() })
@@ -199,14 +199,29 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
       game.addVisual(botonInicio2)
       game.schedule(200, {
         game.removeVisual(pantallaInicio)
-        game.removeVisual(botonInicio1)
-        game.removeVisual(botonInicio2)
+        game.clear()
         pantallas.modosDeJuego()
         })
       })
   }
   method reiniciarJuego() {
     // Reinicializamos las variables del juego
+    nivel1.map([
+        [7,10],
+        [8,2],[8,5],[8,7],
+        [9,3],[9,7],
+        [10,1],[10,7],
+        [11,3],[11,5],[11,9],
+        [12,1],[12,2],[12,7],
+        [13,6],[13,7],[13,8],[13,12],
+        [14,4],[14,7],[14,8],[14,10],
+        [15,2],[15,10],[15,12],
+        [16,7],
+        [17,11],
+        [18,1],[18,13],
+        [19,3],[19,5],[19,9],[19,11],
+        [20,2],[20,5],[20,7],[20,12],
+        [21,4]])
     juegoEnPausa = false
     enInicio = true
 
@@ -216,6 +231,7 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
     player2.moveTo(game.at(21,1))
     player3.moveTo(game.at(7,13))
     player4.moveTo(game.at(21,13))
+    //item_constructor.wall_degen(nivel1.map(), wall_constructor)
     game.schedule(100, {pantallas.iniciar()})
   }
   
@@ -247,23 +263,24 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
     method configurarTeclasModosDeJuegos(){
       // MODOS DE JUEGO
       // UN JUGADOR
+      enInicio = false
       keyboard.n().onPressDo({
-        enInicio = false
         game.addVisual(botonUnJugador2)
         game.schedule(100, {
           game.removeVisual(botonUnJugador2)
           game.clear()
           nivel1.iniciar()
+          
         })
       })
         // DOS JUGADORES
       keyboard.m().onPressDo({
-        enInicio = false
         game.addVisual(botonDosJugadores2)
         game.schedule(100, {
           game.removeVisual(botonDosJugadores2)
           game.clear()
           nivel1.iniciar()
+          
           })
       })
     }
