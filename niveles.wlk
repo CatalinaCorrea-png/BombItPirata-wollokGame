@@ -277,7 +277,7 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
         game.schedule(100, {
           game.removeVisual(botonUnJugador2)
           game.clear()
-          nivel1.iniciar()
+          nivel1.iniciar(false)
           
         })
       })
@@ -287,7 +287,7 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
         game.schedule(100, {
           game.removeVisual(botonDosJugadores2)
           game.clear()
-          nivel1.iniciar()
+          nivel1.iniciar(true)
           
           })
       })

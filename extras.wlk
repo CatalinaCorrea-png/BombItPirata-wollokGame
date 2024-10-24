@@ -1,18 +1,6 @@
 import players.*
 import niveles.*
 
-/// VISUALES TABLERO
-object tableroPiso {
-  const property position = game.at(6,0)
-
-  method image() = "wood-bg-680x600.png"
-}
-object tableroPuntajes {
-  const property position = game.at(1,0)
-
-  method image() = "wood-bg-160x600.png"
-}
-
 class Muerte {
   var property position
   method image() = "skull.png"
@@ -294,11 +282,6 @@ object item_constructor {
   method wall_gen(_lista, kind) {
     kind.construir(_lista)
   }
-  /*
-  method wall_degen(_lista, kind) {
-    kind.destruir(_lista)
-  }
-  */
 }
 object wall_constructor {
   method construir(_lista) {
@@ -380,24 +363,49 @@ object free_board {
   }
 }
 
-
 // IMÁGENES
-class Pantalla{
-  const property position 
-  method image() {}
-}
-object tableroPiso inherits  Pantalla (position = game.at(6,0)) {override method image() = "wood-bg-680x600.png"}
-object pantallaInicio inherits Pantalla (position = game.at(0,0)) {override method image() = "fondoPantallaInicio.png"}
-object tableroPuntajes inherits Pantalla (position = game.at(2,0)) {override method image() = "wood-bg-80x600.png"}
-object botonInicio1 inherits Pantalla (position = game.at(8,5)) {override method image() = "botonPressEnter.png"}
-object botonInicio2 inherits Pantalla (position = game.at(8,5)) {override method image() = "botonPressEnter2.png"}
-object pausa inherits Pantalla (position = game.at(9,3)) {override method image() = "fondoPausa1.png"  }
-object botonPausa1 inherits Pantalla (position = game.at(10,7)) {override method image() = "botonPausa1.png"}
-object botonPausa2 inherits Pantalla (position = game.at(10,5)){override method image() = "botonPausa2.png"}
-object botonPausa1Color inherits Pantalla (position = game.at(10,7)){override method image() = "botonPausa3.png"}
-object botonPausa2Color inherits Pantalla (position = game.at(10,5)){override method image() = "botonPausa4.png"}
-object fondoModoJuego inherits Pantalla (position = game.at(0,0)) {override method image() = "fondoModoDeJuegos.png"}
-object botonUnJugador inherits Pantalla  (position = game.at(8,4)) {override method image() = "boton1Jugador.png"}
-object botonDosJugadores inherits Pantalla  (position = game.at(12.5,4)) {override method image() = "boton2Jugadores.png"}
-object botonUnJugador2 inherits Pantalla (position = game.at(8,4)) {override method image() = "boton1Jugador_2.png"}
-object botonDosJugadores2 inherits Pantalla  (position = game.at(12.5,4)) {override method image() = "boton2Jugadores_2.png"}
+object tableroPiso{ 
+  const property position = game.at(6,0)
+  method image() = "wood-bg-680x600.png"}
+object pantallaInicio{ 
+  const property position = game.at(0,0)
+  method image() = "fondoPantallaInicio.png"}
+object tableroPuntajes{
+  const property position = game.at(1,0)
+  method image() = "wood-bg-160x600.png"}
+object botonInicio1{ 
+  const property position = game.at(8,5)
+  method image() = "botonPressEnter.png"}
+object botonInicio2{ 
+  const property position = game.at(8,5)
+  method image() = "botonPressEnter2.png"}
+object pausa{
+  const property position = game.at(9,3)
+  method image() = "fondoPausa1.png"  }
+object botonPausa1{
+  const property position = game.at(10,7)
+  method image() = "botonPausa1.png"}
+object botonPausa2{
+  const property position = game.at(10,5)
+  method image() = "botonPausa2.png"}
+object botonPausa1Color{
+  const property position = game.at(10,7)
+  method image() = "botonPausa3.png"}
+object botonPausa2Color{
+  const property position = game.at(10,5)
+  method image() = "botonPausa4.png"}
+object fondoModoJuego{
+  const property position = game.at(0,0)
+  method image() = "fondoModoDeJuegos.png"}
+object botonUnJugador{
+  const property position = game.at(8,4)
+  method image() = "boton1Jugador.png"}
+object botonDosJugadores{
+  const property position = game.at(12.5,4)
+  method image() = "boton2Jugadores.png"}
+object botonUnJugador2{
+  const property position = game.at(8,4)
+  method image() = "boton1Jugador_2.png"}
+object botonDosJugadores2{
+  const property position = game.at(12.5,4)
+  method image() = "boton2Jugadores_2.png"}
