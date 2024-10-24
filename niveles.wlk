@@ -32,6 +32,7 @@ object pantallas{
 
 }
 object nivel1 {
+  var property multiplayer = true
   // nivel tiene las posiciones en una lista propia, no estan en el objeto 'constructor'
   var property map = [
         [7,10],
@@ -50,7 +51,7 @@ object nivel1 {
         [20,2],[20,5],[20,7],[20,12],
         [21,4]]
   
-  method iniciar() {
+  method iniciar(players) {
     game.addVisual(tableroPiso)
     game.addVisual(tableroPuntajes)
 
@@ -61,7 +62,7 @@ object nivel1 {
     game.addVisual(new Silla(position = game.at(13,1)))
     game.addVisual(new Wall(position = game.at(12,3)))
     */
-  
+    multiplayer = players
     // Construccion de nivel
     // No rompibles
     item_constructor.wall_gen(self.map(), wall_constructor)
@@ -86,14 +87,17 @@ object nivel1 {
     game.addVisual(vidaPlayer2)
     game.addVisual(vidaPlayer3)
     game.addVisual(vidaPlayer4)
-  
-    /// Para Prueba. Despues van con un constructor
-    // game.addVisual(new Barril(position = game.at(10,2)))
-    // game.addVisual(new BotellaAzul(position = game.at(11,1)))
-    // game.addVisual(new BotellaRoja(position = game.at(12,3)))
-    // game.addVisual(new Silla(position = game.at(13,1)))
+    game.addVisual(bombasPlayer1)
+    game.addVisual(bombasPlayer2)
+    game.addVisual(puntajePlayer1)
+    game.addVisual(puntajePlayer2)
+    // game.addVisual(new AumentoExplosion(position = game.at(10,2)))
+    // game.addVisual(new VidaMas(position = game.at(11,1)))
+    // game.addVisual(new PuntosDobles(position = game.at(12,3)))
+    // game.addVisual(new BombaMas(position = game.at(13,1)))
 
     config.configurarTeclas()
+    config.configurarColisiones()
   }
 }
 object config {
@@ -107,9 +111,9 @@ object config {
     })
 
     /// PLAYER 1:
-    keyboard.c().onPressDo({ if(!juegoEnPausa and !enInicio and player1.tieneVida()) player1.aumExplosion() })
-    keyboard.g().onPressDo({ if(!juegoEnPausa and !enInicio and player1.tieneVida()) player1.perderVida() })
-    keyboard.v().onPressDo({ if(!juegoEnPausa and !enInicio and player1.tieneVida()) player1.vidaMas() })
+    // keyboard.c().onPressDo({ if(!juegoEnPausa and !enInicio and player1.tieneVida()) player1.aumExplosion() })
+    keyboard.g().onPressDo({ if(!juegoEnPausa and !enInicio and player1.tieneVida()) player1.addBomba() })
+    // keyboard.v().onPressDo({ if(!juegoEnPausa and !enInicio and player1.tieneVida()) player1.vidaMas() })
 
     keyboard.a().onPressDo({if (!juegoEnPausa and !enInicio) player1.moveTo(player1.position().left(1)) }) 
     keyboard.d().onPressDo({if (!juegoEnPausa and !enInicio) player1.moveTo(player1.position().right(1)) }) 
@@ -120,20 +124,22 @@ object config {
       })
 
     /// PLAYER 2:
-    keyboard.left().onPressDo({if (!juegoEnPausa and !enInicio) player2.moveTo(player2.position().left(1)) })
-    keyboard.right().onPressDo({if (!juegoEnPausa and !enInicio) player2.moveTo(player2.position().right(1)) })
-    keyboard.up().onPressDo({if (!juegoEnPausa and !enInicio) player2.moveTo(player2.position().up(1)) })
-    keyboard.down().onPressDo({if (!juegoEnPausa and !enInicio) player2.moveTo(player2.position().down(1)) })
-    keyboard.enter().onPressDo({ 
-      if(!juegoEnPausa and !enInicio and player2.tieneVida()) player2.ponerBomba(player2.position()) 
-    })
+    if(!nivel1.multiplayer()){
+      keyboard.left().onPressDo({if (!juegoEnPausa and !enInicio) player2.moveTo(player2.position().left(1)) })
+      keyboard.right().onPressDo({if (!juegoEnPausa and !enInicio) player2.moveTo(player2.position().right(1)) })
+      keyboard.up().onPressDo({if (!juegoEnPausa and !enInicio) player2.moveTo(player2.position().up(1)) })
+      keyboard.down().onPressDo({if (!juegoEnPausa and !enInicio) player2.moveTo(player2.position().down(1)) })
+      keyboard.enter().onPressDo({ 
+        if(!juegoEnPausa and !enInicio and player2.tieneVida()) player2.ponerBomba(player2.position()) 
+      })
+    }
 
     if (!juegoEnPausa and !enInicio) game.onTick(1000, "seMueve", {self.random()})
     
   }
 
 method random() {
-  const direcciones = [1, 1, 2, 2, 3, 3, 4, 4, 5] // se repiten para que sea menos probable que ponga una bomba
+  const direcciones = [1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5] // se repiten para que sea menos probable que ponga una bomba
   
   const direccionPlayer2 = direcciones.anyOne()
   const direccionPlayer3 = direcciones.anyOne()
@@ -145,16 +151,18 @@ method random() {
 method movimiento(direplayer2, direplayer3, direplayer4) {
   
   // Player2 Para que se mueva el 2 descomentar esto
-  // if (direplayer2 == 1) {
-    // player2.moveTo(player2.position().down(1))
-  // } else if (direplayer2 == 2) {
-    // player2.moveTo(player2.position().up(1))
-  // } else if (direplayer2 == 3) {
-    // player2.moveTo(player2.position().left(1))
-  // } else if (direplayer2 == 4) {
-    // player2.moveTo(player2.position().right(1))
-  // } else if (direplayer2 == 5) {
-    // if(player2.tieneVida()) player2.ponerBomba(player2.position()) 
+  // if(!nivel1.multiplayer()){
+  //   if (direplayer2 == 1) {
+  //     player2.moveTo(player2.position().down(1))
+  //   } else if (direplayer2 == 2) {
+  //     player2.moveTo(player2.position().up(1))
+  //   } else if (direplayer2 == 3) {
+  //     player2.moveTo(player2.position().left(1))
+  //   } else if (direplayer2 == 4) {
+  //     player2.moveTo(player2.position().right(1))
+  //   } else if (direplayer2 == 5) {
+  //     if(player2.tieneVida()) player2.ponerBomba(player2.position()) 
+  //   }
   // }
   
   // player3

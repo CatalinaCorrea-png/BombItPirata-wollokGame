@@ -19,7 +19,8 @@ program BombItPirata {
 
 	keyboard.backspace().onPressDo({game.stop()})
 }
-// Se puede poner que el PJ no pueda poner bombas infinitas
+// Se puede poner que el PJ no pueda poner bombas infinitas:
+//    - Agregar contador de bombar (visual)
 // en los niveles posteriores los bots se mueven mas rapido
 // se puede poner un if booleano para que funcione la "IA" o que juegue player 2
 
@@ -28,3 +29,4 @@ program BombItPirata {
 // AGREGAR PANTALLA PARA HACER MULTIJUGADOR [LISTO]
 // VER LO DE PAUSA [LISTO]
 // CUANDO UN PERSONAJE PIERDE UNA VIDA Y SE REINICIA EL JUEGO, INICIALIZAR DE VUELTA EL TABLERO DE VIDAS
+// Los npc tienen que saber donde pusieron la bomba y alejarse, porque sino se van a morir. Pueden caminar más de una celda, para alejarse mas. Y q la bomba tarde mas en explotar.
