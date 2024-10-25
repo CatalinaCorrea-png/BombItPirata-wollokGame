@@ -277,92 +277,6 @@ class BombaMas inherits Powerup {
   }
 }
 
-/// Constructores
-object item_constructor {
-  method wall_gen(_lista, kind) {
-    kind.construir(_lista)
-  }
-}
-object wall_constructor {
-  method construir(_lista) {
-    _lista.forEach({ n => 
-      const block = new Wall(position = game.at(n.get(0), n.get(1)))
-      game.addVisual(block)
-      })
-  }
-}
-object barril_generator {
-  method construir(_lista) {
-    _lista.forEach({ n => 
-    const block = new Barril (position = game.at(n.get(0), n.get(1)))
-    free_board.saved().clear()
-    game.addVisual(block)})
-  }
-}
-object ba_generator {
-  method construir(_lista) {
-    _lista.forEach({ n=> 
-    const block = new BotellaAzul (position = game.at(n.get(0), n.get(1)))
-    free_board.saved().clear()
-    game.addVisual(block)})
-  }
-}
-object br_generator {
-  method construir(_lista) {
-    _lista.forEach({ n=> 
-    const block = new BotellaRoja (position = game.at(n.get(0), n.get(1)))
-    free_board.saved().clear()
-    game.addVisual(block)})
-  }
-}
-object silla_generator {
-  method construir(_lista) {
-    _lista.forEach({ n=> 
-    const block = new Silla(position = game.at(n.get(0), n.get(1)))
-    free_board.saved().clear()
-    game.addVisual(block)})
-  }
-}
-
-// Espacios libres
-object free_board {
-  var property counter = 1
-  var property x = 0
-  var property y = 0
-  var property a = 0
-  var property b = 0
-  var property pos = []
-  var property saved = []
-
-  // 2 posiciones random
-  method pos_eval_x() {
-    a = 7.randomUpTo(21).truncate(0)
-    return a
-  }
-  method pos_eval_y() {
-    b = 1.randomUpTo(14).truncate(0)
-    return b
-  }
-  //Si no estan en la lista de listas, se setean x e y
-  method pos_eval(lvl) {
-    lvl.map().forEach({ n =>
-      pos = [self.pos_eval_x(), self.pos_eval_y()]
-      if(!(lvl.map().contains(pos)) and (counter <= 25) and !(canceled_slots.contains(pos))) {
-        x = pos.get(0)
-        y = pos.get(1)
-        saved.add([x,y]) // Se guardan las posiciones libres
-        counter += 1
-      }
-    })
-    // Para la proxima vuelta, estas tambien ya estan ocupadas
-    self.saved().forEach({ n => 
-      lvl.map().add(n)
-    })
-    counter = 1
-    pos.clear()
-  }
-}
-
 // IMÁGENES
 object tableroPiso{ 
   const property position = game.at(6,0)
@@ -373,6 +287,7 @@ object pantallaInicio{
 object tableroPuntajes{
   const property position = game.at(1,0)
   method image() = "wood-bg-160x600.png"}
+
 object botonInicio1{ 
   const property position = game.at(8,5)
   method image() = "botonPressEnter.png"}
@@ -409,3 +324,101 @@ object botonUnJugador2{
 object botonDosJugadores2{
   const property position = game.at(12.5,4)
   method image() = "boton2Jugadores_2.png"}
+
+
+// ======================== Esto ya no se usa ========================== //
+
+/// Constructores
+// object item_constructor {
+//   method wall_gen(_lista, kind) {
+//     kind.construir(_lista)
+//   }
+// }
+// object wall_constructor {
+//   method construir(_lista) {
+//     _lista.forEach({ n => 
+//       const block = new Wall(position = game.at(n.get(0), n.get(1)))
+//       game.addVisual(block)
+//       })
+//   }
+// }
+// object barril_generator {
+//   method construir(_lista) {
+//     _lista.forEach({ n => 
+//     const block = new Barril (position = game.at(n.get(0), n.get(1)))
+//     free_board.saved().clear()
+//     game.addVisual(block)})
+//   }
+// }
+// object ba_generator {
+//   method construir(_lista) {
+//     _lista.forEach({ n=> 
+//     const block = new BotellaAzul (position = game.at(n.get(0), n.get(1)))
+//     free_board.saved().clear()
+//     game.addVisual(block)})
+//   }
+// }
+// object br_generator {
+//   method construir(_lista) {
+//     _lista.forEach({ n=> 
+//     const block = new BotellaRoja (position = game.at(n.get(0), n.get(1)))
+//     free_board.saved().clear()
+//     game.addVisual(block)})
+//   }
+// }
+
+// object silla_generator {
+//   method construir(_lista) {
+//     _lista.forEach({ n=> 
+//     const block = new Silla(position = game.at(n.get(0), n.get(1)))
+//     free_board.saved().clear()
+//     game.addVisual(block)})
+//   }
+// }
+
+// // Espacios libres
+// object free_board {
+//   var property counter = 1
+//   var property x = 0
+//   var property y = 0
+//   var property a = 0
+//   var property b = 0
+//   var property pos = []
+//   var property saved = []
+
+//   // 2 posiciones random
+//   method pos_eval_x() {
+//     a = 7.randomUpTo(21).truncate(0)
+//     return a
+//   }
+//   method pos_eval_y() {
+//     b = 1.randomUpTo(14).truncate(0)
+//     return b
+//   }
+//   //Si no estan en la lista de listas, se setean x e y
+//   method pos_eval(lvl) {
+//     lvl.map().forEach({ n =>
+//       pos = [self.pos_eval_x(), self.pos_eval_y()]
+//       if(!(lvl.map().contains(pos)) and (counter <= 25) and !(canceled_slots.contains(pos))) {
+//         x = pos.get(0)
+//         y = pos.get(1)
+//         saved.add([x,y]) // Se guardan las posiciones libres
+//         counter += 1
+//       }
+//     })
+//     // Para la proxima vuelta, estas tambien ya estan ocupadas
+//     self.saved().forEach({ n => 
+//       lvl.map().add(n)
+//     })
+//     counter = 1
+//     pos.clear()
+//   }
+// }
+
+// // Posiciones de arranque
+// const canceled_slots = [
+//   [7,1],[7,2],[7,12],[7,13],
+//   [8,1],[8,13],
+//   [20,1],[20,13],
+//   [21,1],[21,2],[21,12],[21,13]
+// ]
