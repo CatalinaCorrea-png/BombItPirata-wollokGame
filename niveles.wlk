@@ -1,14 +1,7 @@
 import players.*
 import extras.*
 import wollok.game.*
-
-// Posiciones de arranque
-const canceled_slots = [
-  [7,1],[7,2],[7,12],[7,13],
-  [8,1],[8,13],
-  [20,1],[20,13],
-  [21,1],[21,2],[21,12],[21,13]
-]
+import map_generator.*
 
 // Inicializar la pantalla de inicio
 object pantallas{
@@ -31,75 +24,7 @@ object pantallas{
   }
 
 }
-object nivel1 {
-  var property multiplayer = true
-  // nivel tiene las posiciones en una lista propia, no estan en el objeto 'constructor'
-  var property map = [
-        [7,10],
-        [8,2],[8,5],[8,7],
-        [9,3],[9,7],
-        [10,1],[10,7],
-        [11,3],[11,5],[11,9],
-        [12,1],[12,2],[12,7],
-        [13,6],[13,7],[13,8],[13,12],
-        [14,4],[14,7],[14,8],[14,10],
-        [15,2],[15,10],[15,12],
-        [16,7],
-        [17,11],
-        [18,1],[18,13],
-        [19,3],[19,5],[19,9],[19,11],
-        [20,2],[20,5],[20,7],[20,12],
-        [21,4]]
-  
-  method iniciar(players) {
-    game.addVisual(tableroPiso)
-    game.addVisual(tableroPuntajes)
 
-    /*
-    game.addVisual(new Barril(position = game.at(10,1)))
-    game.addVisual(new BotellaAzul(position = game.at(11,1)))
-    game.addVisual(new BotellaRoja(position = game.at(12,1)))
-    game.addVisual(new Silla(position = game.at(13,1)))
-    game.addVisual(new Wall(position = game.at(12,3)))
-    */
-    multiplayer = players
-    // Construccion de nivel
-    // No rompibles
-    item_constructor.wall_gen(self.map(), wall_constructor)
-    // Rompibles (como tu señora madre)
-    free_board.pos_eval(self)
-    item_constructor.wall_gen(free_board.saved(), barril_generator)
-    free_board.pos_eval(self)
-    item_constructor.wall_gen(free_board.saved(), ba_generator)
-    free_board.pos_eval(self)
-    item_constructor.wall_gen(free_board.saved(), br_generator)
-
-    	//Players y display
-    game.addVisual(player1)
-    game.addVisual(player2)
-    game.addVisual(player3)
-    game.addVisual(player4)
-    game.addVisual(caraPlayer1)
-    game.addVisual(caraPlayer2)
-    game.addVisual(caraPlayer3)
-    game.addVisual(caraPlayer4)
-    game.addVisual(vidaPlayer1)
-    game.addVisual(vidaPlayer2)
-    game.addVisual(vidaPlayer3)
-    game.addVisual(vidaPlayer4)
-    game.addVisual(bombasPlayer1)
-    game.addVisual(bombasPlayer2)
-    game.addVisual(puntajePlayer1)
-    game.addVisual(puntajePlayer2)
-    // game.addVisual(new AumentoExplosion(position = game.at(10,2)))
-    // game.addVisual(new VidaMas(position = game.at(11,1)))
-    // game.addVisual(new PuntosDobles(position = game.at(12,3)))
-    // game.addVisual(new BombaMas(position = game.at(13,1)))
-
-    config.configurarTeclas()
-    config.configurarColisiones()
-  }
-}
 object config {
   var property juegoEnPausa = false 
   var property enInicio = true
@@ -214,22 +139,6 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
   }
   method reiniciarJuego() {
     // Reinicializamos las variables del juego
-    nivel1.map([
-        [7,10],
-        [8,2],[8,5],[8,7],
-        [9,3],[9,7],
-        [10,1],[10,7],
-        [11,3],[11,5],[11,9],
-        [12,1],[12,2],[12,7],
-        [13,6],[13,7],[13,8],[13,12],
-        [14,4],[14,7],[14,8],[14,10],
-        [15,2],[15,10],[15,12],
-        [16,7],
-        [17,11],
-        [18,1],[18,13],
-        [19,3],[19,5],[19,9],[19,11],
-        [20,2],[20,5],[20,7],[20,12],
-        [21,4]])
     juegoEnPausa = false
     enInicio = true
 
@@ -239,7 +148,6 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
     player2.moveTo(game.at(21,1))
     player3.moveTo(game.at(7,13))
     player4.moveTo(game.at(21,13))
-    //item_constructor.wall_degen(nivel1.map(), wall_constructor)
     game.schedule(100, {pantallas.iniciar()})
   }
   
