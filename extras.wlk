@@ -89,7 +89,7 @@ class Bomba {
   method esColisionable() = true
   method teEncontro(_player) = true // No hace nada
   method seRompe(_player) = true // No hace nada
-
+  method explotable() = false
 }
 
 class Explosion {
@@ -97,6 +97,9 @@ class Explosion {
   var property player
   var property largo 
   const property indexLargos = []
+
+  method explotable() = false
+
   method indexLargos() {
     if(self.largo() == 1){
       return [0,1]
@@ -128,26 +131,34 @@ class Explosion {
     self.colisiones()
   }
 
-   method colisiones() {
+  method colisiones() {
     var objetos = []
 
     objetos = self.indexLargos().flatMap({ opLargo => game.getObjectsIn(self.centro().left(opLargo))})
-    if (!objetos.isEmpty()) objetos.forEach({obj => obj.seRompe(player)})
-    // objetos.clear()
+    if (!objetos.isEmpty()) {
+      objetos.forEach({obj => obj.seRompe(player)})
+      objetos.clear()
+    }
 
     objetos = self.indexLargos().flatMap({ opLargo => game.getObjectsIn(self.centro().right(opLargo))})
-    if (!objetos.isEmpty()) objetos.forEach({obj => obj.seRompe(player)})
-    // objetos.clear()
+    if (!objetos.isEmpty()) {
+      objetos.forEach({obj => obj.seRompe(player)})
+      objetos.clear()
+    }
 
     objetos = self.indexLargos().flatMap({ opLargo => game.getObjectsIn(self.centro().up(opLargo))})
-    if (!objetos.isEmpty()) objetos.forEach({obj => obj.seRompe(player)})
-    // objetos.clear()
+    if (!objetos.isEmpty()) {
+      objetos.forEach({obj => obj.seRompe(player)})
+      objetos.clear()
+    }
 
     objetos = self.indexLargos().flatMap({ opLargo => game.getObjectsIn(self.centro().down(opLargo))})
-    if (!objetos.isEmpty()) objetos.forEach({obj => obj.seRompe(player)})
-    // objetos.clear()
-    
+    if (!objetos.isEmpty()) {
+      objetos.forEach({obj => obj.seRompe(player)})
+      objetos.clear()
     }
+  
+  }
 
 }
 
@@ -174,7 +185,8 @@ class ObjetoNoSolido {
   method addPowerup(powerup) {
     game.addVisual(powerup)
   }
-  
+
+  method explotable() = true
 }
 
 class Barril inherits ObjetoNoSolido {
@@ -225,6 +237,7 @@ class Wall {
     
     method esColisionable() = true
     method seRompe(player) = false
+    method explotable() = false
 }
 
 
@@ -234,7 +247,8 @@ class Powerup {
 
   method esColisionable() = false
   method seRompe(player) = true // No hace nada
-
+  method explotable() = false
+  
 }
 
 class AumentoExplosion inherits Powerup {
