@@ -59,13 +59,16 @@ object config {
       })
     }
 
-    if (!juegoEnPausa and !enInicio) game.onTick(1000, "seMueve", {self.random()})
+    if (!juegoEnPausa and !enInicio) game.onTick(250, "seMueve", {self.random()})
     
   }
 
 method random() {
   const direcciones = [1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5] // se repiten para que sea menos probable que ponga una bomba
   
+  // Se podria mejorar evaluando las 4 posiciones posibles para ir sin chocarse, y recien de ahi sacar una random (de una lista por ejemplo).
+  // Que pongan bombas cuando se encuentren con un objeto solido.
+  // Las bombas cuentan como posiciones ocupadas para que las esquiven los mogules.
   const direccionPlayer2 = direcciones.anyOne()
   const direccionPlayer3 = direcciones.anyOne()
   const direccionPlayer4 = direcciones.anyOne()
@@ -75,20 +78,20 @@ method random() {
 
 method movimiento(direplayer2, direplayer3, direplayer4) {
   
-  // Player2 Para que se mueva el 2 descomentar esto
-  // if(!nivel1.multiplayer()){
-  //   if (direplayer2 == 1) {
-  //     player2.moveTo(player2.position().down(1))
-  //   } else if (direplayer2 == 2) {
-  //     player2.moveTo(player2.position().up(1))
-  //   } else if (direplayer2 == 3) {
-  //     player2.moveTo(player2.position().left(1))
-  //   } else if (direplayer2 == 4) {
-  //     player2.moveTo(player2.position().right(1))
-  //   } else if (direplayer2 == 5) {
-  //     if(player2.tieneVida()) player2.ponerBomba(player2.position()) 
-  //   }
-  // }
+  // Player2 Para que se mueva el 2 descomentar esto (sin multiplayer)
+  if(!nivel1.multiplayer()){
+    if (direplayer2 == 1) {
+      player2.moveTo(player2.position().down(1))
+    } else if (direplayer2 == 2) {
+      player2.moveTo(player2.position().up(1))
+    } else if (direplayer2 == 3) {
+      player2.moveTo(player2.position().left(1))
+    } else if (direplayer2 == 4) {
+      player2.moveTo(player2.position().right(1))
+    } else if (direplayer2 == 5) {
+      if(player2.tieneVida()) player2.ponerBomba(player2.position()) 
+    }
+  }
   
   // player3
   if (direplayer3 == 1) {
@@ -144,10 +147,11 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
 
     // Inicializo de vuelta las posiciones
     game.clear()
-    player1.moveTo(game.at(7,1))
-    player2.moveTo(game.at(21,1))
-    player3.moveTo(game.at(7,13))
-    player4.moveTo(game.at(21,13))
+    // Adentro del reinicio empiezan todas las variables de los players devuelta
+    player1.reiniciar(game.at(7,1))
+    player2.reiniciar(game.at(21,1))
+    player3.reiniciar(game.at(7,13))
+    player4.reiniciar(game.at(21,13))
     game.schedule(100, {pantallas.iniciar()})
   }
   
