@@ -10,12 +10,21 @@ class Player {
   var property largoExplosion = 1
   var property puntaje = 0
   var property vidas = 3
-  var property bombas = 5
+  var property bombas = 50
   var property boolBomba = false
   var property boolPuntosDobles = false
 
     // Esto es admisible  ?
   var property objNoColisionables = #{0,player1,player2}
+  
+  method reiniciar(_posicion) {
+    self.moveTo(_posicion)
+    puntaje = 0
+    vidas = 3
+    bombas = 50
+    largoExplosion = 1
+    
+  }
   method esColisionable() = true
 
   // IMAGEN
@@ -120,6 +129,8 @@ class Player {
       // game.schedule(3000, game.removeVisual(self))
     }
   }
+
+  method explotable() = true
 
 }
 
