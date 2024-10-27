@@ -330,13 +330,13 @@ object botonUnJugador{
   const property position = game.at(8,4)
   method image() = "boton1Jugador.png"}
 object botonDosJugadores{
-  const property position = game.at(12.5,4)
+  const property position = game.at(12,4)
   method image() = "boton2Jugadores.png"}
 object botonUnJugador2{
   const property position = game.at(8,4)
   method image() = "boton1Jugador_2.png"}
 object botonDosJugadores2{
-  const property position = game.at(12.5,4)
+  const property position = game.at(12,4)
   method image() = "boton2Jugadores_2.png"}
 
 
