@@ -30,6 +30,7 @@ object config {
   var property enInicio = true
 
   method configurarTeclas() {
+    juegoEnPausa = false
     /// PAUSA
     keyboard.p().onPressDo({
       juegoEnPausa = true
@@ -131,6 +132,7 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
   // INICIAR JUEGO
   method configurarTeclasInicio() {
     // PARA INICIAR EL JUEGO
+    enInicio = true
     keyboard.enter().onPressDo({
       game.removeVisual(botonInicio1)
       game.addVisual(botonInicio2)
@@ -143,11 +145,6 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
   }
   
   method reiniciarJuego() {
-    // Limpio pantalla y listeners 
-    game.clear()
-     // Reinicializamos las variables del juego
-    juegoEnPausa = false
-    enInicio = true
     // Adentro del reinicio empiezan todas las variables de los players devuelta
     player1.reiniciar(game.at(7,1))
     player2.reiniciar(game.at(21,1))
@@ -157,7 +154,7 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
   }
   
   method configurarTeclasPausa() {
-    var seleccionado
+    var seleccionado 
 
     // REANUDAR JUEGO
     keyboard.up().onPressDo({
@@ -182,10 +179,11 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
         game.removeVisual(pausa)
         game.removeVisual(botonPausa2)
         game.removeVisual(botonPausa1)
-        game.removeVisual(botonPausa1Color)
-        game.removeVisual(botonPausa2Color)})
+        game.removeVisual(botonPausa1Color)})
         juegoEnPausa = false
-        } else if (seleccionado == 2) self.reiniciarJuego()}})
+        } else if (seleccionado == 2) {
+          game.clear()
+          self.reiniciarJuego()}}})   
     }
     method configurarTeclasModosDeJuegos(){
       // MODOS DE JUEGO
