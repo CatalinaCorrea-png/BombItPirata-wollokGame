@@ -1,0 +1,16 @@
+import wollok.game.*
+import extras.*
+import niveles.*
+
+program BombItPirata {
+	game.title("BombItPirata")
+	game.height(15)
+	game.width(25)
+	game.cellSize(40)
+	game.boardGround("stone-floor-1.png")
+	
+	pantallas.iniciar()
+	game.start()
+
+	keyboard.backspace().onPressDo({game.stop()})
+}
