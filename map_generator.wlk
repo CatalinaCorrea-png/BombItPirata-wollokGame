@@ -58,10 +58,6 @@ class Nivel {
         game.addVisual(bombasPlayer2)
         game.addVisual(puntajePlayer1)
         game.addVisual(puntajePlayer2)
-        // game.addVisual(new AumentoExplosion(position = game.at(10,2)))
-        // game.addVisual(new VidaMas(position = game.at(11,1)))
-        // game.addVisual(new PuntosDobles(position = game.at(12,3)))
-        // game.addVisual(new BombaMas(position = game.at(13,1)))
 
         config.configurarTeclas()
         config.configurarColisiones()
