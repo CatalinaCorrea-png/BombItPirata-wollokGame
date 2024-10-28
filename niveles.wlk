@@ -33,8 +33,10 @@ object config {
     juegoEnPausa = false
     /// PAUSA
     keyboard.p().onPressDo({
-      juegoEnPausa = true
-      pantallas.pantallaPausa()
+      if (!juegoEnPausa){
+        juegoEnPausa = true
+        pantallas.pantallaPausa()
+      }
     })
   
     /// PLAYER 1:
@@ -161,15 +163,20 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
       if (juegoEnPausa){
         seleccionado = 1
         game.removeVisual(botonPausa2Color)
+        game.addVisual(botonPausa2)
         game.addVisual(botonPausa1Color)}
       })
     // SALIR A PANTALLA INICIAL
     keyboard.down().onPressDo({
       if (juegoEnPausa){
         seleccionado = 2
+        game.removeVisual(botonPausa1)
         game.removeVisual(botonPausa1Color)
+        game.removeVisual(botonPausa2Color)
+        game.removeVisual(botonPausa2)
+        game.addVisual(botonPausa1)
         game.addVisual(botonPausa2Color)
-        game.addVisual(botonPausa1)}
+        }
       }) 
     
     keyboard.enter().onPressDo({
@@ -182,6 +189,7 @@ method movimiento(direplayer2, direplayer3, direplayer4) {
         game.removeVisual(botonPausa1Color)})
         juegoEnPausa = false
         } else if (seleccionado == 2) {
+
           game.clear()
           self.reiniciarJuego()}}})   
     }

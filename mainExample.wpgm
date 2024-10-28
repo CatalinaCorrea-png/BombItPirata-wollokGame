@@ -4,6 +4,8 @@ import extras.*
 import niveles.*
 program BombItPirata {
 	game.title("Pepita")
+
+	
 	game.height(15)
 	game.width(25)
 	game.cellSize(40)
